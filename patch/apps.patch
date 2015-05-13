@@ -1,0 +1,289 @@
+diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/Kconfig src/apps/examples/Kconfig
+--- tmp/apps/examples/Kconfig	2015-04-28 10:43:43.799538706 +0300
++++ src/apps/examples/Kconfig	2015-04-28 10:58:30.075341953 +0300
+@@ -52,6 +52,7 @@ source "$APPSDIR/examples/poll/Kconfig"
+ source "$APPSDIR/examples/pppd/Kconfig"
+ source "$APPSDIR/examples/pwm/Kconfig"
+ source "$APPSDIR/examples/posix_spawn/Kconfig"
++source "$APPSDIR/examples/prometheus/Kconfig"
+ source "$APPSDIR/examples/qencoder/Kconfig"
+ source "$APPSDIR/examples/random/Kconfig"
+ source "$APPSDIR/examples/relays/Kconfig"
+diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/Make.defs src/apps/examples/Make.defs
+--- tmp/apps/examples/Make.defs	2015-04-28 10:43:43.799538706 +0300
++++ src/apps/examples/Make.defs	2015-04-28 10:58:30.075341953 +0300
+@@ -234,6 +234,10 @@ ifeq ($(CONFIG_EXAMPLES_POSIXSPAWN),y)
+ CONFIGURED_APPS += examples/posix_spawn
+ endif
+ 
++ifeq ($(CONFIG_EXAMPLES_PROMETHEUS),y)
++CONFIGURED_APPS += examples/prometheus
++endif
++
+ ifeq ($(CONFIG_EXAMPLES_QENCODER),y)
+ CONFIGURED_APPS += examples/qencoder
+ endif
+diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/Makefile src/apps/examples/Makefile
+--- tmp/apps/examples/Makefile	2015-04-28 10:43:43.799538706 +0300
++++ src/apps/examples/Makefile	2015-04-28 10:58:30.075341953 +0300
+@@ -42,7 +42,7 @@ SUBDIRS += dhcpd discover djoystick elf
+ SUBDIRS += hidkbd igmp i2schar json keypadtest lcdrw ltdc mm modbus mount
+ SUBDIRS += mtdpart mtdrwb netpkt nettest nrf24l01_term nsh null nx nxterm
+ SUBDIRS += nxffs nxflat nxhello nximage nxlines nxtext ostest pashello pipe
+-SUBDIRS += poll posix_spawn pwm qencoder random relays rgmp romfs sendmail
++SUBDIRS += poll posix_spawn prometheus pwm qencoder random relays rgmp romfs sendmail
+ SUBDIRS += serialblaster serloop serialrx slcd smart smart_test tcpecho
+ SUBDIRS += telnetd thttpd tiff timer touchscreen udp usbserial usbterm
+ SUBDIRS += ustream udgram watchdog webserver wget wgetjson xmlrpc pppd
+@@ -57,7 +57,7 @@ ifeq ($(CONFIG_NSH_BUILTIN_APPS),y)
+ CNTXTDIRS += adc ajoystick bridge can cc3000 cpuhog cxxtest dhcpd discover
+ CNTXTDIRS += djoystick flash_test ftpd hello helloxx i2schar json keypadtest
+ CNTXTDIRS += ltdc modbus lcdrw mtdpart mtdrwb netpkt nettest nx nxhello
+-CNTXTDIRS += nximage nxlines nxtext nrf24l01_term ostest random relays
++CNTXTDIRS += nximage nxlines nxtext nrf24l01_term ostest prometheus random relays
+ CNTXTDIRS += qencoder serialblasters lcd serialrx smart_test tcpecho telnetd
+ CNTXTDIRS += tiff timer touchscreen usbterm udgram ustream watchdog wgetjson
+ CNTXTDIRS += pppd
+diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/prometheus/.gitignore src/apps/examples/prometheus/.gitignore
+--- tmp/apps/examples/prometheus/.gitignore	1970-01-01 03:00:00.000000000 +0300
++++ src/apps/examples/prometheus/.gitignore	2015-04-28 10:58:30.075341953 +0300
+@@ -0,0 +1,11 @@
++/Make.dep
++/.depend
++/.built
++/*.asm
++/*.obj
++/*.rel
++/*.lst
++/*.sym
++/*.adb
++/*.lib
++/*.src
+diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/prometheus/Kconfig src/apps/examples/prometheus/Kconfig
+--- tmp/apps/examples/prometheus/Kconfig	1970-01-01 03:00:00.000000000 +0300
++++ src/apps/examples/prometheus/Kconfig	2015-04-28 10:58:30.075341953 +0300
+@@ -0,0 +1,22 @@
++#
++# For a description of the syntax of this configuration file,
++# see misc/tools/kconfig-language.txt.
++#
++
++config EXAMPLES_PROMETHEUS
++	bool "\"Prometheus\" example"
++	default n
++	---help---
++		Enable the \"Prometheus\" example
++
++if EXAMPLES_PROMETHEUS
++
++config EXAMPLES_PROMETHEUS_PROGNAME
++	string "Program name"
++	default "prometheus"
++	depends on BUILD_KERNEL
++	---help---
++		This is the name of the program that will be use when the NSH ELF
++		program is installed.
++
++endif
+diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/prometheus/Makefile src/apps/examples/prometheus/Makefile
+--- tmp/apps/examples/prometheus/Makefile	1970-01-01 03:00:00.000000000 +0300
++++ src/apps/examples/prometheus/Makefile	2015-04-29 15:50:40.522036551 +0300
+@@ -0,0 +1,137 @@
++############################################################################
++# apps/examples/prometheus/Makefile
++#
++#   Copyright (C) 2015 Gregory Nutt. All rights reserved.
++#   Author: Gregory Nutt <gnutt@nuttx.org>
++#
++# Redistribution and use in source and binary forms, with or without
++# modification, are permitted provided that the following conditions
++# are met:
++#
++# 1. Redistributions of source code must retain the above copyright
++#    notice, this list of conditions and the following disclaimer.
++# 2. Redistributions in binary form must reproduce the above copyright
++#    notice, this list of conditions and the following disclaimer in
++#    the documentation and/or other materials provided with the
++#    distribution.
++# 3. Neither the name NuttX nor the names of its contributors may be
++#    used to endorse or promote products derived from this software
++#    without specific prior written permission.
++#
++# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
++# FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
++# COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
++# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
++# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
++# OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
++# AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
++# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
++# ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++# POSSIBILITY OF SUCH DAMAGE.
++#
++############################################################################
++
++-include $(TOPDIR)/.config
++-include $(TOPDIR)/Make.defs
++include $(APPDIR)/Make.defs
++
++# "Prometheus" built-in application info
++
++APPNAME = prometheus
++PRIORITY = SCHED_PRIORITY_DEFAULT
++STACKSIZE = 4096
++
++# "Prometheus" Example
++
++ASRCS =
++CSRCS =
++MAINSRC = prometheus_main.c
++
++AOBJS = $(ASRCS:.S=$(OBJEXT))
++COBJS = $(CSRCS:.c=$(OBJEXT))
++MAINOBJ = $(MAINSRC:.c=$(OBJEXT))
++
++SRCS = $(ASRCS) $(CSRCS) $(MAINSRC)
++OBJS = $(AOBJS) $(COBJS)
++
++ifneq ($(CONFIG_BUILD_KERNEL),y)
++  OBJS += $(MAINOBJ)
++endif
++
++ifeq ($(CONFIG_WINDOWS_NATIVE),y)
++  BIN = ..\..\libapps$(LIBEXT)
++else
++ifeq ($(WINTOOL),y)
++  BIN = ..\\..\\libapps$(LIBEXT)
++else
++  BIN = ../../libapps$(LIBEXT)
++endif
++endif
++
++ifeq ($(WINTOOL),y)
++  INSTALL_DIR = "${shell cygpath -w $(BIN_DIR)}"
++else
++  INSTALL_DIR = $(BIN_DIR)
++endif
++
++CONFIG_EXAMPLES_PROMETHEUS_PROGNAME ?= prometheus$(EXEEXT)
++PROGNAME = $(CONFIG_EXAMPLES_PROMETHEUS_PROGNAME)
++
++ROOTDEPPATH = --dep-path .
++
++# Common build
++
++VPATH =
++
++all: .built
++.PHONY: clean depend distclean
++
++$(AOBJS): %$(OBJEXT): %.S
++	$(call ASSEMBLE, $<, $@)
++
++$(COBJS) $(MAINOBJ): %$(OBJEXT): %.c
++	$(call COMPILE, $<, $@)
++
++.built: $(OBJS)
++	$(call ARCHIVE, $(BIN), $(OBJS))
++	@touch .built
++
++ifeq ($(CONFIG_BUILD_KERNEL),y)
++$(BIN_DIR)$(DELIM)$(PROGNAME): $(OBJS) $(MAINOBJ)
++	@echo "LD: $(PROGNAME)"
++	$(Q) $(LD) $(LDELFFLAGS) $(LDLIBPATH) -o $(INSTALL_DIR)$(DELIM)$(PROGNAME) $(ARCHCRT0OBJ) $(MAINOBJ) $(LDLIBS)
++	$(Q) $(NM) -u  $(INSTALL_DIR)$(DELIM)$(PROGNAME)
++
++install: $(BIN_DIR)$(DELIM)$(PROGNAME)
++
++else
++install:
++
++endif
++
++ifeq ($(CONFIG_NSH_BUILTIN_APPS),y)
++$(BUILTIN_REGISTRY)$(DELIM)$(APPNAME)_main.bdat: $(DEPCONFIG) Makefile
++	$(call REGISTER,$(APPNAME),$(PRIORITY),$(STACKSIZE),$(APPNAME)_main)
++
++context: $(BUILTIN_REGISTRY)$(DELIM)$(APPNAME)_main.bdat
++else
++context:
++endif
++
++.depend: Makefile $(SRCS)
++	@$(MKDEP) $(ROOTDEPPATH) "$(CC)" -- $(CFLAGS) -- $(SRCS) >Make.dep
++	@touch $@
++
++depend: .depend
++
++clean:
++	$(call DELFILE, .built)
++	$(call CLEAN)
++
++distclean: clean
++	$(call DELFILE, Make.dep)
++	$(call DELFILE, .depend)
++
++-include Make.dep
+diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/prometheus/prometheus_main.c src/apps/examples/prometheus/prometheus_main.c
+--- tmp/apps/examples/prometheus/prometheus_main.c	1970-01-01 03:00:00.000000000 +0300
++++ src/apps/examples/prometheus/prometheus_main.c	2015-04-30 14:17:39.636013504 +0300
+@@ -0,0 +1,57 @@
++/****************************************************************************
++ * Included Files
++ ****************************************************************************/
++
++#include <stdio.h>
++
++#include <fcntl.h>
++#include <unistd.h>
++#include <sys/ioctl.h>
++
++#include <nuttx/w1/w1.h>
++
++/****************************************************************************
++ * Pre-processor Definitions
++ ****************************************************************************/
++
++#define W1_BUS		"/dev/w1-1/bus"
++
++/****************************************************************************
++ * Public Functions
++ ****************************************************************************/
++
++#ifdef CONFIG_BUILD_KERNEL
++int main(int argc, FAR char *argv[])
++#else
++int prometheus_main(int argc, char *argv[])
++#endif
++{
++	int fd;
++	struct w1_rom_code_s rom;
++
++	printf("open %s device : ", W1_BUS);
++	fd = open(W1_BUS, O_CREAT);
++	if (fd < 0) {
++		printf("FAIL\n");
++		return -1;
++
++	}
++	printf("OK\n");
++
++	printf("ioctl read rom :");
++	if (ioctl(fd, SNIOC_W1_BUS_READ_ROM, (FAR struct w1_rom_code_s*) &rom)
++			!= 0) {
++		printf("FAIL\n");
++		close(fd);
++		return -1;
++	}
++	printf("OK\n");
++	printf("ROM : family=0x%02X serial=0x%012llX crc=0x%02X rom=0x%16llX\n",
++			rom.family_code, rom.serial_number, rom.crc, rom.rom);
++
++	printf("close %s device : ", W1_BUS);
++	close(fd);
++	printf("OK\n");
++
++	return -1;
++}
