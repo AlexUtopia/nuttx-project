@@ -39,9 +39,11 @@ all:
 	mkdir -p $(EXE_DIR)/
 	cd $(SRC_DIR)/$(NUTTX_DIR)/; . ./setenv.sh; make CROSSDEV=$(TOOLCHAIN_PREFIX) pass2; \
 	$(TOOLCHAIN_PREFIX)size -d nuttx > ../../$(EXE_DIR)/nuttx.info; \
-	$(TOOLCHAIN_PREFIX)objdump -D nuttx  > ../../$(EXE_DIR)/nuttx.disassembly
+	$(TOOLCHAIN_PREFIX)objdump -D nuttx  > ../../$(EXE_DIR)/nuttx.disassembly; \
+	$(TOOLCHAIN_PREFIX)objdump -t nuttx  > ../../$(EXE_DIR)/nuttx.map
 	cp -f $(SRC_DIR)/$(NUTTX_DIR)/nuttx $(EXE_DIR)/nuttx.elf
 	cp -f $(SRC_DIR)/$(NUTTX_DIR)/nuttx.hex $(EXE_DIR)/nuttx.hex
+	cp -f $(SRC_DIR)/$(NUTTX_DIR)/nuttx.bin $(EXE_DIR)/nuttx.bin
 
 
 configure:

@@ -1,6 +1,6 @@
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/configs/teensy/nsh/defconfig
 --- tmp/nuttx/configs/teensy/nsh/defconfig	2015-05-19 15:48:42.348741841 +0300
-+++ src/nuttx/configs/teensy/nsh/defconfig	2015-05-19 16:23:24.216872838 +0300
++++ src/nuttx/configs/teensy/nsh/defconfig	2015-05-19 18:14:27.768542227 +0300
 @@ -20,7 +20,8 @@ CONFIG_WINDOWS_CYGWIN=y
  #
  # Build Configuration
@@ -24,17 +24,19 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_ARCH_STDBOOL_H is not set
  # CONFIG_ARCH_MATH_H is not set
  # CONFIG_ARCH_FLOAT_H is not set
-@@ -43,8 +46,9 @@ CONFIG_INTELHEX_BINARY=y
+@@ -43,9 +46,10 @@ CONFIG_INTELHEX_BINARY=y
  # Debug Options
  #
  # CONFIG_DEBUG is not set
 -CONFIG_ARCH_HAVE_STACKCHECK=y
  # CONFIG_ARCH_HAVE_HEAPCHECK is not set
+-# CONFIG_DEBUG_SYMBOLS is not set
 +CONFIG_ARCH_HAVE_STACKCHECK=y
 +# CONFIG_STACK_COLORATION is not set
- # CONFIG_DEBUG_SYMBOLS is not set
++CONFIG_DEBUG_SYMBOLS=y
  CONFIG_ARCH_HAVE_CUSTOMOPT=y
  # CONFIG_DEBUG_NOOPT is not set
+ # CONFIG_DEBUG_CUSTOMOPT is not set
 @@ -67,14 +71,11 @@ CONFIG_ARCH_AVR=y
  CONFIG_ARCH="avr"
  CONFIG_ARCH_FAMILY="avr"
@@ -54,7 +56,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # AVR Configuration Options
-@@ -85,6 +86,10 @@ CONFIG_AVR_BUILDROOT=y
+@@ -85,16 +86,19 @@ CONFIG_AVR_BUILDROOT=y
  #
  # AT90USB Configuration Options
  #
@@ -65,7 +67,10 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # AT90USB Peripheral Selections
-@@ -94,7 +99,6 @@ CONFIG_AVR_USART1=y
+ #
+-# CONFIG_AVR_SPI is not set
++CONFIG_AVR_SPI=y
+ CONFIG_AVR_USART1=y
  # CONFIG_AVR_USBDEV is not set
  # CONFIG_AVR_WDT is not set
  # CONFIG_AVR_GPIOIRQ is not set
@@ -90,11 +95,15 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  CONFIG_ARCH_STACKDUMP=y
  # CONFIG_ENDIAN_BIG is not set
  # CONFIG_ARCH_IDLE_CUSTOM is not set
-@@ -160,39 +169,71 @@ CONFIG_NSH_MMCSDMINOR=0
+@@ -160,39 +169,75 @@ CONFIG_NSH_MMCSDMINOR=0
  #
  # Board-Specific Options
  #
-+# CONFIG_LIB_BOARDCTL is not set
++CONFIG_LIB_BOARDCTL=y
++# CONFIG_BOARDCTL_TSCTEST is not set
++# CONFIG_BOARDCTL_ADCTEST is not set
++# CONFIG_BOARDCTL_GRAPHICS is not set
++# CONFIG_BOARDCTL_IOCTL is not set
  
  #
  # RTOS Features
@@ -178,7 +187,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # Signal Numbers
-@@ -202,19 +243,11 @@ CONFIG_SIG_SIGUSR2=2
+@@ -202,19 +247,11 @@ CONFIG_SIG_SIGUSR2=2
  CONFIG_SIG_SIGALARM=3
  
  #
@@ -202,15 +211,17 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # Stack and heap information
-@@ -223,6 +256,7 @@ CONFIG_IDLETHREAD_STACKSIZE=512
+@@ -222,7 +259,8 @@ CONFIG_PREALLOC_TIMERS=0
+ CONFIG_IDLETHREAD_STACKSIZE=512
  CONFIG_USERMAIN_STACKSIZE=512
  CONFIG_PTHREAD_STACK_MIN=256
- CONFIG_PTHREAD_STACK_DEFAULT=512
+-CONFIG_PTHREAD_STACK_DEFAULT=512
++CONFIG_PTHREAD_STACK_DEFAULT=768
 +# CONFIG_LIB_SYSCALL is not set
  
  #
  # Device Drivers
-@@ -231,6 +265,12 @@ CONFIG_DISABLE_POLL=y
+@@ -231,24 +269,69 @@ CONFIG_DISABLE_POLL=y
  CONFIG_DEV_NULL=y
  # CONFIG_DEV_ZERO is not set
  # CONFIG_LOOP is not set
@@ -223,9 +234,16 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_RAMDISK is not set
  # CONFIG_CAN is not set
  # CONFIG_ARCH_HAVE_PWM_PULSECOUNT is not set
-@@ -239,6 +279,11 @@ CONFIG_DEV_NULL=y
+ # CONFIG_PWM is not set
+ # CONFIG_ARCH_HAVE_I2CRESET is not set
  # CONFIG_I2C is not set
- # CONFIG_SPI is not set
+-# CONFIG_SPI is not set
++CONFIG_SPI=y
++# CONFIG_SPI_OWNBUS is not set
++# CONFIG_SPI_EXCHANGE is not set
++# CONFIG_SPI_CMDDATA is not set
++# CONFIG_SPI_CALLBACK is not set
++# CONFIG_SPI_BITBANG is not set
  # CONFIG_I2S is not set
 +
 +#
@@ -235,15 +253,48 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_RTC is not set
  # CONFIG_WATCHDOG is not set
  # CONFIG_ANALOG is not set
-@@ -249,6 +294,7 @@ CONFIG_DEV_NULL=y
+ # CONFIG_AUDIO_DEVICES is not set
+ # CONFIG_VIDEO_DEVICES is not set
+-# CONFIG_BCH is not set
++CONFIG_BCH=y
+ # CONFIG_INPUT is not set
  # CONFIG_LCD is not set
  # CONFIG_MMCSD is not set
- # CONFIG_MTD is not set
+-# CONFIG_MTD is not set
++CONFIG_MTD=y
++
++#
++# MTD Configuration
++#
++# CONFIG_MTD_PARTITION is not set
++# CONFIG_MTD_SECT512 is not set
++# CONFIG_MTD_BYTE_WRITE is not set
++# CONFIG_MTD_CONFIG is not set
++
++#
++# MTD Device Drivers
++#
++# CONFIG_MTD_NAND is not set
++# CONFIG_RAMMTD is not set
++# CONFIG_MTD_AT24XX is not set
++# CONFIG_MTD_AT25 is not set
++# CONFIG_MTD_AT45DB is not set
++CONFIG_MTD_M25P=y
++CONFIG_M25P_SPIMODE=0
++CONFIG_M25P_MANUFACTURER=0x20
++CONFIG_M25P_MEMORY_TYPE=0x80
++CONFIG_M25P_SUBSECTOR_ERASE=y
++# CONFIG_MTD_SMART is not set
++# CONFIG_MTD_RAMTRON is not set
++# CONFIG_MTD_SST25 is not set
++# CONFIG_MTD_SST25XX is not set
++# CONFIG_MTD_SST39FV is not set
++# CONFIG_MTD_W25 is not set
 +# CONFIG_EEPROM is not set
  # CONFIG_PIPES is not set
  # CONFIG_PM is not set
  # CONFIG_POWER is not set
-@@ -257,7 +303,28 @@ CONFIG_DEV_NULL=y
+@@ -257,7 +340,28 @@ CONFIG_DEV_NULL=y
  CONFIG_SERIAL=y
  # CONFIG_DEV_LOWCONSOLE is not set
  # CONFIG_16550_UART is not set
@@ -272,7 +323,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # USART Configuration
-@@ -265,7 +332,11 @@ CONFIG_ARCH_HAVE_USART1=y
+@@ -265,7 +369,11 @@ CONFIG_ARCH_HAVE_USART1=y
  CONFIG_USART1_ISUART=y
  CONFIG_MCU_SERIAL=y
  CONFIG_STANDARD_SERIAL=y
@@ -284,7 +335,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_NO_SERIAL_CONSOLE is not set
  
  #
-@@ -279,8 +350,6 @@ CONFIG_USART1_PARITY=0
+@@ -279,8 +387,6 @@ CONFIG_USART1_PARITY=0
  CONFIG_USART1_2STOP=0
  # CONFIG_USART1_IFLOWCONTROL is not set
  # CONFIG_USART1_OFLOWCONTROL is not set
@@ -293,7 +344,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_USBDEV is not set
  # CONFIG_USBHOST is not set
  # CONFIG_WIRELESS is not set
-@@ -293,6 +362,7 @@ CONFIG_USART1_2STOP=0
+@@ -293,6 +399,7 @@ CONFIG_USART1_2STOP=0
  # System Logging
  #
  # CONFIG_RAMLOG is not set
@@ -301,7 +352,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # Networking Support
-@@ -302,6 +372,11 @@ CONFIG_USART1_2STOP=0
+@@ -302,24 +409,39 @@ CONFIG_USART1_2STOP=0
  # CONFIG_NET is not set
  
  #
@@ -313,12 +364,27 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # File Systems
  #
  
-@@ -312,14 +387,15 @@ CONFIG_DISABLE_MOUNTPOINT=y
+ #
+ # File system configuration
+ #
+-CONFIG_DISABLE_MOUNTPOINT=y
++# CONFIG_DISABLE_MOUNTPOINT is not set
++# CONFIG_FS_AUTOMOUNTER is not set
  CONFIG_DISABLE_PSEUDOFS_OPERATIONS=y
- # CONFIG_FS_READABLE is not set
- # CONFIG_FS_WRITABLE is not set
+-# CONFIG_FS_READABLE is not set
+-# CONFIG_FS_WRITABLE is not set
++CONFIG_FS_READABLE=y
++CONFIG_FS_WRITABLE=y
 +# CONFIG_FS_NAMED_SEMAPHORES is not set
  # CONFIG_FS_RAMMAP is not set
++CONFIG_FS_FAT=y
++# CONFIG_FAT_LCNAMES is not set
++# CONFIG_FAT_LFN is not set
++# CONFIG_FS_FATTIME is not set
++# CONFIG_FAT_DMAMEMORY is not set
++# CONFIG_FS_NXFFS is not set
++# CONFIG_FS_ROMFS is not set
++# CONFIG_FS_SMARTFS is not set
  # CONFIG_FS_PROCFS is not set
  
  #
@@ -330,7 +396,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # Graphics Support
-@@ -340,7 +416,7 @@ CONFIG_MM_REGIONS=1
+@@ -340,7 +462,7 @@ CONFIG_MM_REGIONS=1
  # CONFIG_AUDIO is not set
  
  #
@@ -339,7 +405,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  #
  # CONFIG_BINFMT_DISABLE is not set
  # CONFIG_BINFMT_EXEPATH is not set
-@@ -364,6 +440,7 @@ CONFIG_LIB_HOMEDIR="/"
+@@ -364,6 +486,7 @@ CONFIG_LIB_HOMEDIR="/"
  # CONFIG_LIBM is not set
  CONFIG_NOPRINTF_FIELDWIDTH=y
  # CONFIG_LIBC_FLOATINGPOINT is not set
@@ -347,16 +413,19 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  CONFIG_LIB_RAND_ORDER=1
  # CONFIG_EOL_IS_CR is not set
  # CONFIG_EOL_IS_LF is not set
-@@ -375,6 +452,8 @@ CONFIG_TASK_SPAWN_DEFAULT_STACKSIZE=2048
+@@ -374,7 +497,11 @@ CONFIG_POSIX_SPAWN_PROXY_STACKSIZE=1024
+ CONFIG_TASK_SPAWN_DEFAULT_STACKSIZE=2048
  # CONFIG_LIBC_STRERROR is not set
  # CONFIG_LIBC_PERROR_STDOUT is not set
++CONFIG_LIBC_TMPDIR="/tmp"
++CONFIG_LIBC_MAX_TMPFILE=32
  CONFIG_ARCH_LOWPUTC=y
 +# CONFIG_LIBC_LOCALTIME is not set
 +# CONFIG_TIME_EXTENDED is not set
  CONFIG_LIB_SENDFILE_BUFSIZE=512
  # CONFIG_ARCH_ROMGETC is not set
  # CONFIG_ARCH_OPTIMIZED_FUNCTIONS is not set
-@@ -382,7 +461,6 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
+@@ -382,7 +509,6 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
  #
  # Non-standard Library Support
  #
@@ -364,7 +433,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_LIB_KBDCODEC is not set
  # CONFIG_LIB_SLCDCODEC is not set
  
-@@ -406,6 +484,7 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
+@@ -406,6 +532,7 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
  # CONFIG_EXAMPLES_BUTTONS is not set
  # CONFIG_EXAMPLES_CAN is not set
  # CONFIG_EXAMPLES_CONFIGDATA is not set
@@ -372,7 +441,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_EXAMPLES_DHCPD is not set
  # CONFIG_EXAMPLES_ELF is not set
  # CONFIG_EXAMPLES_FTPC is not set
-@@ -416,7 +495,6 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
+@@ -416,7 +543,6 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
  # CONFIG_EXAMPLES_HIDKBD is not set
  # CONFIG_EXAMPLES_KEYPADTEST is not set
  # CONFIG_EXAMPLES_IGMP is not set
@@ -380,7 +449,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_EXAMPLES_MM is not set
  # CONFIG_EXAMPLES_MODBUS is not set
  # CONFIG_EXAMPLES_MOUNT is not set
-@@ -432,14 +510,16 @@ CONFIG_EXAMPLES_NSH=y
+@@ -432,14 +558,16 @@ CONFIG_EXAMPLES_NSH=y
  # CONFIG_EXAMPLES_NXLINES is not set
  # CONFIG_EXAMPLES_NXTEXT is not set
  # CONFIG_EXAMPLES_OSTEST is not set
@@ -398,7 +467,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_EXAMPLES_SERLOOP is not set
  # CONFIG_EXAMPLES_SLCD is not set
  # CONFIG_EXAMPLES_SMART is not set
-@@ -448,7 +528,6 @@ CONFIG_EXAMPLES_NSH=y
+@@ -448,7 +576,6 @@ CONFIG_EXAMPLES_NSH=y
  # CONFIG_EXAMPLES_THTTPD is not set
  # CONFIG_EXAMPLES_TIFF is not set
  # CONFIG_EXAMPLES_TOUCHSCREEN is not set
@@ -406,7 +475,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_EXAMPLES_WEBSERVER is not set
  # CONFIG_EXAMPLES_USBSERIAL is not set
  # CONFIG_EXAMPLES_USBTERM is not set
-@@ -458,12 +537,14 @@ CONFIG_EXAMPLES_NSH=y
+@@ -458,12 +585,15 @@ CONFIG_EXAMPLES_NSH=y
  # Graphics Support
  #
  # CONFIG_TIFF is not set
@@ -415,13 +484,14 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  #
  # Interpreters
  #
++# CONFIG_INTERPRETERS_BAS is not set
  # CONFIG_INTERPRETERS_FICL is not set
  # CONFIG_INTERPRETERS_PCODE is not set
 +# CONFIG_INTERPRETERS_MICROPYTHON is not set
  
  #
  # Network Utilities
-@@ -473,15 +554,11 @@ CONFIG_EXAMPLES_NSH=y
+@@ -473,15 +603,11 @@ CONFIG_EXAMPLES_NSH=y
  # Networking Utilities
  #
  # CONFIG_NETUTILS_CODECS is not set
@@ -438,7 +508,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # FreeModBus
-@@ -492,8 +569,18 @@ CONFIG_EXAMPLES_NSH=y
+@@ -492,50 +618,64 @@ CONFIG_EXAMPLES_NSH=y
  # NSH Library
  #
  CONFIG_NSH_LIBRARY=y
@@ -450,6 +520,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_NSH_CLE is not set
 +CONFIG_NSH_LINELEN=64
 +CONFIG_NSH_DISABLE_SEMICOLON=y
++# CONFIG_NSH_CMDPARMS is not set
 +CONFIG_NSH_MAXARGUMENTS=6
 +# CONFIG_NSH_ARGCAT is not set
 +CONFIG_NSH_NESTDEPTH=3
@@ -457,23 +528,73 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # Disable Individual commands
-@@ -503,6 +590,7 @@ CONFIG_NSH_DISABLE_ADDROUTE=y
- # CONFIG_NSH_DISABLE_CD is not set
- # CONFIG_NSH_DISABLE_CP is not set
+ #
+ CONFIG_NSH_DISABLE_ADDROUTE=y
+ # CONFIG_NSH_DISABLE_CAT is not set
+-# CONFIG_NSH_DISABLE_CD is not set
+-# CONFIG_NSH_DISABLE_CP is not set
++CONFIG_NSH_DISABLE_CD=y
++CONFIG_NSH_DISABLE_CP=y
  CONFIG_NSH_DISABLE_CMP=y
 +CONFIG_NSH_DISABLE_DATE=y
  CONFIG_NSH_DISABLE_DD=y
  CONFIG_NSH_DISABLE_DF=y
  CONFIG_NSH_DISABLE_DELROUTE=y
-@@ -523,6 +611,7 @@ CONFIG_NSH_DISABLE_MKFIFO=y
+ # CONFIG_NSH_DISABLE_ECHO is not set
+ CONFIG_NSH_DISABLE_EXEC=y
+ CONFIG_NSH_DISABLE_EXIT=y
+-# CONFIG_NSH_DISABLE_FREE is not set
++CONFIG_NSH_DISABLE_FREE=y
+ CONFIG_NSH_DISABLE_GET=y
+-# CONFIG_NSH_DISABLE_HELP is not set
++CONFIG_NSH_DISABLE_HELP=y
+ CONFIG_NSH_DISABLE_HEXDUMP=y
+-# CONFIG_NSH_DISABLE_IFCONFIG is not set
+-# CONFIG_NSH_DISABLE_KILL is not set
++CONFIG_NSH_DISABLE_IFCONFIG=y
++CONFIG_NSH_DISABLE_KILL=y
+ CONFIG_NSH_DISABLE_LOSETUP=y
+ # CONFIG_NSH_DISABLE_LS is not set
+-# CONFIG_NSH_DISABLE_MB is not set
+-# CONFIG_NSH_DISABLE_MKDIR is not set
++CONFIG_NSH_DISABLE_MB=y
++CONFIG_NSH_DISABLE_MKDIR=y
++# CONFIG_NSH_DISABLE_MKFATFS is not set
+ CONFIG_NSH_DISABLE_MKFIFO=y
  CONFIG_NSH_DISABLE_MKRD=y
- # CONFIG_NSH_DISABLE_MH is not set
- # CONFIG_NSH_DISABLE_MOUNT is not set
-+# CONFIG_NSH_DISABLE_MV is not set
- # CONFIG_NSH_DISABLE_MW is not set
+-# CONFIG_NSH_DISABLE_MH is not set
+-# CONFIG_NSH_DISABLE_MOUNT is not set
+-# CONFIG_NSH_DISABLE_MW is not set
++CONFIG_NSH_DISABLE_MH=y
++CONFIG_NSH_DISABLE_MOUNT=y
++CONFIG_NSH_DISABLE_MV=y
++CONFIG_NSH_DISABLE_MW=y
  # CONFIG_NSH_DISABLE_PS is not set
  CONFIG_NSH_DISABLE_PUT=y
-@@ -544,18 +633,16 @@ CONFIG_NSH_DISABLE_XD=y
+-# CONFIG_NSH_DISABLE_PWD is not set
+-# CONFIG_NSH_DISABLE_RM is not set
+-# CONFIG_NSH_DISABLE_RMDIR is not set
+-# CONFIG_NSH_DISABLE_SET is not set
+-# CONFIG_NSH_DISABLE_SH is not set
+-# CONFIG_NSH_DISABLE_SLEEP is not set
+-# CONFIG_NSH_DISABLE_TEST is not set
+-# CONFIG_NSH_DISABLE_UMOUNT is not set
+-# CONFIG_NSH_DISABLE_UNSET is not set
+-# CONFIG_NSH_DISABLE_USLEEP is not set
++CONFIG_NSH_DISABLE_PWD=y
++CONFIG_NSH_DISABLE_RM=y
++CONFIG_NSH_DISABLE_RMDIR=y
++CONFIG_NSH_DISABLE_SET=y
++CONFIG_NSH_DISABLE_SH=y
++CONFIG_NSH_DISABLE_SLEEP=y
++CONFIG_NSH_DISABLE_TEST=y
++CONFIG_NSH_DISABLE_UMOUNT=y
++CONFIG_NSH_DISABLE_UNSET=y
++CONFIG_NSH_DISABLE_USLEEP=y
+ CONFIG_NSH_DISABLE_WGET=y
+ CONFIG_NSH_DISABLE_XD=y
+ 
+@@ -544,20 +684,18 @@ CONFIG_NSH_DISABLE_XD=y
  #
  CONFIG_NSH_CODECS_BUFSIZE=128
  CONFIG_NSH_FILEIOSIZE=512
@@ -496,9 +617,12 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  #
 +CONFIG_NSH_CONSOLE=y
  # CONFIG_NSH_ALTCONDEV is not set
- # CONFIG_NSH_ARCHINIT is not set
+-# CONFIG_NSH_ARCHINIT is not set
++CONFIG_NSH_ARCHINIT=y
  
-@@ -571,97 +658,19 @@ CONFIG_NSH_CONSOLE=y
+ #
+ # NxWidgets/NxWM
+@@ -571,97 +709,19 @@ CONFIG_NSH_CONSOLE=y
  #
  # System Libraries and NSH Add-Ons
  #
@@ -601,6 +725,316 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
 -# Zmodem Commands
 -#
  # CONFIG_SYSTEM_ZMODEM is not set
+diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/src/at90usb_boot.c src/nuttx/configs/teensy/src/at90usb_boot.c
+--- tmp/nuttx/configs/teensy/src/at90usb_boot.c	2015-05-19 15:48:42.348741841 +0300
++++ src/nuttx/configs/teensy/src/at90usb_boot.c	2015-05-19 17:49:45.049391016 +0300
+@@ -42,6 +42,8 @@
+ #include <debug.h>
+ 
+ #include <arch/board/board.h>
++#include <nuttx/mtd/mtd.h>
++#include <nuttx/spi/spi.h>
+ 
+ #include "up_arch.h"
+ #include "up_internal.h"
+@@ -90,3 +92,77 @@ void at90usb_boardinitialize(void)
+   at90usb_ledinit();
+ #endif
+ }
++
++/****************************************************************************
++ * Public Functions
++ ****************************************************************************/
++
++/****************************************************************************
++ * Name: board_app_initialize
++ *
++ * Description:
++ *   Perform architecture specific initialization for NSH.
++ *
++ *   CONFIG_NSH_ARCHINIT=y :
++ *     Called from the NSH library
++ *
++ *   CONFIG_BOARD_INITIALIZE=y, CONFIG_NSH_LIBRARY=y, &&
++ *   CONFIG_NSH_ARCHINIT=n:
++ *     Called from board_initialize().
++ *
++ ****************************************************************************/
++#define PRINT(fmt, ...)    lowsyslog(0, fmt, ##__VA_ARGS__)
++int board_app_initialize(void)
++{
++  struct spi_dev_s *spi;
++  FAR struct mtd_dev_s *mtd;
++  int ret;
++
++  PRINT("SPI init :");
++  spi = up_spiinitialize(0);
++  if (spi == NULL)
++  {
++    PRINT("FAIL\n");
++    return -1;
++  }
++  PRINT("OK\n");
++
++  PRINT("M25P init : ");
++  mtd = m25p_initialize(spi);
++  if (!mtd)
++  {
++    PRINT("FAIL\n");
++    return -1;
++  }
++  PRINT("OK\n");
++#if 0
++  PRINT("S512 init : ");
++  mtd = /*s512_initialize*/mtd_rwb_initialize(mtd);
++  if (!mtd)
++  {
++	PRINT("FAIL\n");
++	return -1;
++  }
++  PRINT("OK\n");
++#endif
++  PRINT("Block device init : ");
++  ret = ftl_initialize(0, mtd);
++  if (ret < 0)
++  {
++    PRINT("FAIL\n");
++    return -1;
++  }
++  PRINT("OK\n");
++#if 0
++  PRINT("Char device init : ");
++  ret = bchdev_register("/dev/mtdblock0", "/dev/mtd0", false);
++  if (ret < 0)
++    {
++      PRINT("FAIL\n");
++      return -1;
++    }
++  PRINT("OK\n");
++#endif
++
++  return 0;
++}
+diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/src/at90usb_spi.c src/nuttx/configs/teensy/src/at90usb_spi.c
+--- tmp/nuttx/configs/teensy/src/at90usb_spi.c	2015-05-19 15:48:42.348741841 +0300
++++ src/nuttx/configs/teensy/src/at90usb_spi.c	2015-05-19 16:36:56.401060725 +0300
+@@ -178,6 +178,7 @@ void  avr_spiselect(FAR struct spi_dev_s
+ uint8_t avr_spistatus(FAR struct spi_dev_s *dev, enum spi_dev_e devid)
+ {
+   uint8_t ret = 0;
++#if 0
+   uint8_t regval = PINB;
+ 
+   /* Both the CD and WP pins are pull high by the AT90USB and will be
+@@ -193,7 +194,7 @@ uint8_t avr_spistatus(FAR struct spi_dev
+     {
+       ret |= SPI_STATUS_WRPROTECTED;
+     }
+-
++#endif
+   sspdbg("Returning %02x\n", ret);
+   return ret;
+ }
+diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/drivers/bch/bchdev_register.c src/nuttx/drivers/bch/bchdev_register.c
+--- tmp/nuttx/drivers/bch/bchdev_register.c	2015-05-19 15:48:42.388742228 +0300
++++ src/nuttx/drivers/bch/bchdev_register.c	2015-05-19 17:41:07.436107260 +0300
+@@ -86,7 +86,7 @@ int bchdev_register(FAR const char *blkd
+   ret = bchlib_setup(blkdev, readonly, &handle);
+   if (ret < 0)
+     {
+-      fdbg("bchlib_setup failed: %d\n", -ret);
++      lowsyslog(0,/*fdbg(*/"bchlib_setup failed: %d\n", -ret);
+       return ret;
+     }
+ 
+@@ -95,7 +95,7 @@ int bchdev_register(FAR const char *blkd
+   ret = register_driver(chardev, &bch_fops, 0666, handle);
+   if (ret < 0)
+     {
+-      fdbg("register_driver failed: %d\n", -ret);
++	  lowsyslog(0,/*fdbg(*/"register_driver failed: %d\n", -ret);
+       bchlib_teardown(handle);
+       handle = NULL;
+     }
+diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/drivers/mtd/ftl.c src/nuttx/drivers/mtd/ftl.c
+--- tmp/nuttx/drivers/mtd/ftl.c	2015-05-19 15:48:42.400742342 +0300
++++ src/nuttx/drivers/mtd/ftl.c	2015-05-19 17:42:23.868888584 +0300
+@@ -551,7 +551,7 @@ int ftl_initialize(int minor, FAR struct
+       dev->eblock  = (FAR uint8_t *)kmm_malloc(dev->geo.erasesize);
+       if (!dev->eblock)
+         {
+-          fdbg("Failed to allocate an erase block buffer\n");
++          lowsyslog(0,/*fdbg(*/"Failed to allocate an erase block buffer %d\n", dev->geo.erasesize);
+           kmm_free(dev);
+           return -ENOMEM;
+         }
+@@ -597,7 +597,7 @@ int ftl_initialize(int minor, FAR struct
+       ret = register_blockdriver(devname, &g_bops, 0, dev);
+       if (ret < 0)
+         {
+-          fdbg("register_blockdriver failed: %d\n", -ret);
++    	  lowsyslog(0,/*fdbg(*/"register_blockdriver failed: %d\n", -ret);
+           kmm_free(dev);
+         }
+     }
+diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/drivers/mtd/m25px.c src/nuttx/drivers/mtd/m25px.c
+--- tmp/nuttx/drivers/mtd/m25px.c	2015-05-19 15:48:42.404742380 +0300
++++ src/nuttx/drivers/mtd/m25px.c	2015-05-19 17:15:33.840376990 +0300
+@@ -89,6 +89,7 @@
+ #define M25P_MEMORY_TYPE           CONFIG_M25P_MEMORY_TYPE
+ #define M25P_RES_ID                0x13
+ #define M25P_M25P1_CAPACITY        0x11 /* 1 M-bit */
++#define M25P_M25P20_CAPACITY       0x12 /* 2 M-bit */
+ #define M25P_EN25F80_CAPACITY      0x14 /* 8 M-bit */
+ #define M25P_M25P16_CAPACITY       0x15 /* 16 M-bit */
+ #define M25P_M25P32_CAPACITY       0x16 /* 32 M-bit */
+@@ -100,11 +101,23 @@
+  *  (512 pages) * (256 bytes per page)
+  */
+ 
+-#define M25P_M25P1_SECTOR_SHIFT    15    /* Sector size 1 << 15 = 65,536 */
++#define M25P_M25P1_SECTOR_SHIFT    15    /* Sector size 1 << 15 = 32,768 */
+ #define M25P_M25P1_NSECTORS        4
+ #define M25P_M25P1_PAGE_SHIFT      8     /* Page size 1 << 8 = 256 */
+ #define M25P_M25P1_NPAGES          512
+ 
++/*  M25P20 capacity is 262,144 bytes:
++ *  (8 sectors) * (65,536 bytes per sector)
++ *  (1024 pages) * (256 bytes per page)
++ */
++
++#define M25P_M25P20_SECTOR_SHIFT    16    /* Sector size 1 << 16 = 65,536 */
++#define M25P_M25P20_NSECTORS        4
++#define M25P_M25P20_PAGE_SHIFT      8     /* Page size 1 << 8 = 256 */
++#define M25P_M25P20_NPAGES          1024
++#define M25P_M25P20_SUBSECT_SHIFT	8     /* Sub-Sector size 1 << 8 = 256 (for M25PE20) */
++#define M25P_M25P20_NSUBSECTORS     1024
++
+ /*  EN25F80 capacity is 1,048,576 bytes:
+  *  (16 sectors) * (65,536 bytes per sector)
+  *  (512 pages) * (256 bytes per page)
+@@ -114,7 +127,7 @@
+ #define M25P_EN25F80_NSECTORS      16
+ #define M25P_EN25F80_PAGE_SHIFT    8     /* Page size 1 << 8 = 256 */
+ #define M25P_EN25F80_NPAGES        4096
+-#define M25P_EN25F80_SUBSECT_SHIFT 12   /* Sub-Sector size 1 << 12 = 4,096 */
++#define M25P_EN25F80_SUBSECT_SHIFT 12    /* Sub-Sector size 1 << 12 = 4,096 */
+ #define M25P_EN25F80_NSUBSECTORS   256
+ 
+ /*  M25P16 capacity is 2,097,152 bytes:
+@@ -172,7 +185,7 @@
+ #define M25P_BE        0xc7    /* 1 Bulk Erase                0   0     0     */
+ #define M25P_DP        0xb9    /* 2 Deep power down           0   0     0     */
+ #define M25P_RES       0xab    /* 2 Read Electronic Signature 0   3     >=1   */
+-#define M25P_SSE       0x20    /* 3 Sub-Sector Erase          0   0     0     */
++#define M25P_SSE       0xdb//0x20    /* 3 Sub-Sector Erase          0   0     0     */
+ 
+ /* NOTE 1: All parts.
+  * NOTE 2: M25P632/M25P64
+@@ -325,7 +338,7 @@ static inline int m25p_readid(struct m25
+   SPI_SELECT(priv->dev, SPIDEV_FLASH, false);
+   m25p_unlock(priv->dev);
+ 
+-  fvdbg("manufacturer: %02x memory: %02x capacity: %02x\n",
++  lowsyslog(0,/*fvdbg(*/"manufacturer: %02x memory: %02x capacity: %02x\n",
+         manufacturer, memory, capacity);
+ 
+   /* Check for a valid manufacturer and memory type */
+@@ -348,6 +361,19 @@ static inline int m25p_readid(struct m25
+            priv->npages         = M25P_M25P1_NPAGES;
+            return OK;
+         }
++	  if (capacity == M25P_M25P20_CAPACITY)
++		{
++           /* Save the FLASH geometry */
++
++           priv->sectorshift    = M25P_M25P20_SECTOR_SHIFT;
++           priv->nsectors       = M25P_M25P20_NSECTORS;
++           priv->pageshift      = M25P_M25P20_PAGE_SHIFT;
++           priv->npages         = M25P_M25P20_NPAGES;
++#ifdef CONFIG_M25P_SUBSECTOR_ERASE
++           priv->subsectorshift = M25P_M25P20_SUBSECT_SHIFT;
++#endif
++           return OK;
++        }
+       else if (capacity == M25P_EN25F80_CAPACITY)
+         {
+            /* Save the FLASH geometry */
+diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/fs/fat/fs_mkfatfs.c src/nuttx/fs/fat/fs_mkfatfs.c
+--- tmp/nuttx/fs/fat/fs_mkfatfs.c	2015-05-19 15:48:42.448742807 +0300
++++ src/nuttx/fs/fat/fs_mkfatfs.c	2015-05-19 18:06:34.455649977 +0300
+@@ -96,6 +96,16 @@ static inline int mkfatfs_getgeometry(FA
+       return -ENODEV;
+     }
+ 
++  /* Support M25P flashes geometry to 512 bytes sectors */
++
++  var->fv_sectorscale = 1;
++  if (geometry.geo_sectorsize == 256)
++    {
++      geometry.geo_nsectors /= 2;
++      geometry.geo_sectorsize *= 2;
++      var->fv_sectorscale = 2;
++    }
++
+   /* Check if the user provided maxblocks was provided and, if so, that is it less than
+    * the actual number of blocks on the device.
+    */
+@@ -185,6 +195,7 @@ int mkfatfs(FAR const char *pathname, FA
+ 
+   /* Initialize */
+ 
++  lowsyslog(0, "mkfatfs\n");
+   memset(&var, 0, sizeof(struct fat_var_s));
+ 
+   /* Get the filesystem creation time */
+@@ -282,6 +293,7 @@ int mkfatfs(FAR const char *pathname, FA
+    * reported device geometry.
+    */
+ 
++  lowsyslog(0, "mkfatfs_getgeometry\n");
+   ret = mkfatfs_getgeometry(fmt, &var);
+   if (ret < 0)
+     {
+@@ -290,6 +302,7 @@ int mkfatfs(FAR const char *pathname, FA
+ 
+   /* Configure the file system */
+ 
++  lowsyslog(0, "mkfatfs_configfatfs\n");
+   ret = mkfatfs_configfatfs(fmt, &var);
+   if (ret < 0)
+     {
+@@ -298,6 +311,7 @@ int mkfatfs(FAR const char *pathname, FA
+ 
+   /* Allocate a buffer that will be working sector memory */
+ 
++  lowsyslog(0, "kmm_malloc\n");
+ #ifdef CONFIG_FAT_DMAMEMORY
+   var.fv_sect = (uint8_t*)fat_dma_alloc(var.fv_sectorsize);
+ #else
+diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/fs/fat/fs_mkfatfs.h src/nuttx/fs/fat/fs_mkfatfs.h
+--- tmp/nuttx/fs/fat/fs_mkfatfs.h	2015-05-19 15:48:42.448742807 +0300
++++ src/nuttx/fs/fat/fs_mkfatfs.h	2015-05-19 17:33:42.891554757 +0300
+@@ -75,9 +75,9 @@
+     var->fv_inode->u.i_bops->close(var->fv_inode) : \
+     0
+ #define DEV_READ(buf, sect, nsect) \
+-    var->fv_inode->u.i_bops->read(var->fv_inode, buf, sect, nsect)
++    var->fv_inode->u.i_bops->read(var->fv_inode, buf, sect * var->fv_sectorscale, nsect * var->fv_sectorscale)
+ #define DEV_WRITE(buf, sect, nsect) \
+-    var->fv_inode->u.i_bops->write(var->fv_inode, buf, sect, nsect)
++    var->fv_inode->u.i_bops->write(var->fv_inode, buf, sect * var->fv_sectorscale, nsect * var->fv_sectorscale)
+ #define DEV_GEOMETRY(geo) \
+     var->fv_inode->u.i_bops->geometry(var->fv_inode, &geo)
+ #define DEV_IOCTL(cmd, arg) \
+@@ -107,6 +107,7 @@ struct fat_var_s
+    uint32_t       fv_nclusters;      /* Number of clusters */
+    uint8_t       *fv_sect;           /* Allocated working sector buffer */
+    const uint8_t *fv_bootcode;       /* Points to boot code to put into MBR */
++   uint8_t        fv_sectorscale;    /*  */
+ };
+ 
+ /****************************************************************************
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/.version src/nuttx/.version
 --- tmp/nuttx/.version	1970-01-01 03:00:00.000000000 +0300
 +++ src/nuttx/.version	2015-05-19 16:15:36.548311314 +0300
