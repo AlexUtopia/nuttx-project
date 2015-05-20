@@ -1,6 +1,6 @@
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/configs/teensy/nsh/defconfig
 --- tmp/nuttx/configs/teensy/nsh/defconfig	2015-05-19 15:48:42.348741841 +0300
-+++ src/nuttx/configs/teensy/nsh/defconfig	2015-05-19 18:14:27.768542227 +0300
++++ src/nuttx/configs/teensy/nsh/defconfig	2015-05-20 14:11:17.900255818 +0300
 @@ -20,7 +20,8 @@ CONFIG_WINDOWS_CYGWIN=y
  #
  # Build Configuration
@@ -211,18 +211,18 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # Stack and heap information
-@@ -222,7 +259,8 @@ CONFIG_PREALLOC_TIMERS=0
- CONFIG_IDLETHREAD_STACKSIZE=512
+@@ -223,22 +260,39 @@ CONFIG_IDLETHREAD_STACKSIZE=512
  CONFIG_USERMAIN_STACKSIZE=512
  CONFIG_PTHREAD_STACK_MIN=256
--CONFIG_PTHREAD_STACK_DEFAULT=512
-+CONFIG_PTHREAD_STACK_DEFAULT=768
+ CONFIG_PTHREAD_STACK_DEFAULT=512
 +# CONFIG_LIB_SYSCALL is not set
  
  #
  # Device Drivers
-@@ -231,24 +269,69 @@ CONFIG_DISABLE_POLL=y
- CONFIG_DEV_NULL=y
+ #
+ CONFIG_DISABLE_POLL=y
+-CONFIG_DEV_NULL=y
++# CONFIG_DEV_NULL is not set
  # CONFIG_DEV_ZERO is not set
  # CONFIG_LOOP is not set
 +
@@ -253,10 +253,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_RTC is not set
  # CONFIG_WATCHDOG is not set
  # CONFIG_ANALOG is not set
- # CONFIG_AUDIO_DEVICES is not set
- # CONFIG_VIDEO_DEVICES is not set
--# CONFIG_BCH is not set
-+CONFIG_BCH=y
+@@ -248,7 +302,36 @@ CONFIG_DEV_NULL=y
  # CONFIG_INPUT is not set
  # CONFIG_LCD is not set
  # CONFIG_MMCSD is not set
@@ -725,6 +722,18 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
 -# Zmodem Commands
 -#
  # CONFIG_SYSTEM_ZMODEM is not set
+diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/Make.defs src/nuttx/configs/teensy/nsh/Make.defs
+--- tmp/nuttx/configs/teensy/nsh/Make.defs	2015-05-19 15:48:42.348741841 +0300
++++ src/nuttx/configs/teensy/nsh/Make.defs	2015-05-20 14:05:24.276558544 +0300
+@@ -63,7 +63,7 @@ OBJCOPY = $(CROSSDEV)objcopy
+ OBJDUMP = $(CROSSDEV)objdump
+ 
+ ifeq ($(CONFIG_DEBUG_SYMBOLS),y)
+-  ARCHOPTIMIZATION = -g
++  ARCHOPTIMIZATION = -g -gdwarf-2
+ endif
+ 
+ ifneq ($(CONFIG_DEBUG_NOOPT),y)
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/src/at90usb_boot.c src/nuttx/configs/teensy/src/at90usb_boot.c
 --- tmp/nuttx/configs/teensy/src/at90usb_boot.c	2015-05-19 15:48:42.348741841 +0300
 +++ src/nuttx/configs/teensy/src/at90usb_boot.c	2015-05-19 17:49:45.049391016 +0300
@@ -1035,6 +1044,27 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/fs/fat/fs_mkfatfs.h src/nuttx/fs/fat/fs
  };
  
  /****************************************************************************
+diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/tools/Config.mk src/nuttx/tools/Config.mk
+--- tmp/nuttx/tools/Config.mk	2015-05-19 15:48:42.636744627 +0300
++++ src/nuttx/tools/Config.mk	2015-05-20 13:41:46.546022296 +0300
+@@ -114,7 +114,7 @@ endef
+ 
+ define COMPILE
+ 	@echo "CC: $1"
+-	$(Q) $(CC) -c $(CFLAGS) $1 -o $2
++	$(Q) $(CC) -c $(CFLAGS) $(addprefix $(shell pwd)/,$1) -o $(addprefix $(shell pwd)/,$2)
+ endef
+ 
+ # COMPILEXX - Default macro to compile one C++ file
+@@ -149,7 +149,7 @@ endef
+ 
+ define ASSEMBLE
+ 	@echo "AS: $1"
+-	$(Q) $(CC) -c $(AFLAGS) $1 -o $2
++	$(CC) -c $(AFLAGS) $(addprefix $(shell pwd)/,$1) -o $(addprefix $(shell pwd)/,$2)
+ endef
+ 
+ # MOVEOBJ - Default macro to move an object file to the correct location
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/.version src/nuttx/.version
 --- tmp/nuttx/.version	1970-01-01 03:00:00.000000000 +0300
 +++ src/nuttx/.version	2015-05-19 16:15:36.548311314 +0300
