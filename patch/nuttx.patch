@@ -1,6 +1,6 @@
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/configs/teensy/nsh/defconfig
 --- tmp/nuttx/configs/teensy/nsh/defconfig	2015-05-19 15:48:42.348741841 +0300
-+++ src/nuttx/configs/teensy/nsh/defconfig	2015-05-22 17:13:51.714709637 +0300
++++ src/nuttx/configs/teensy/nsh/defconfig	2015-05-25 17:49:36.179274864 +0300
 @@ -20,7 +20,8 @@ CONFIG_WINDOWS_CYGWIN=y
  #
  # Build Configuration
@@ -331,7 +331,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # USART Configuration
-@@ -265,7 +370,11 @@ CONFIG_ARCH_HAVE_USART1=y
+@@ -265,22 +370,24 @@ CONFIG_ARCH_HAVE_USART1=y
  CONFIG_USART1_ISUART=y
  CONFIG_MCU_SERIAL=y
  CONFIG_STANDARD_SERIAL=y
@@ -343,7 +343,15 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_NO_SERIAL_CONSOLE is not set
  
  #
-@@ -279,8 +388,6 @@ CONFIG_USART1_PARITY=0
+ # USART1 Configuration
+ #
+-CONFIG_USART1_RXBUFSIZE=256
+-CONFIG_USART1_TXBUFSIZE=256
++CONFIG_USART1_RXBUFSIZE=32
++CONFIG_USART1_TXBUFSIZE=8
+ CONFIG_USART1_BAUD=38400
+ CONFIG_USART1_BITS=8
+ CONFIG_USART1_PARITY=0
  CONFIG_USART1_2STOP=0
  # CONFIG_USART1_IFLOWCONTROL is not set
  # CONFIG_USART1_OFLOWCONTROL is not set
@@ -1004,6 +1012,18 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/fs/fat/fs_mkfatfs.h src/nuttx/fs/fat/fs
  };
  
  /****************************************************************************
+diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/include/nuttx/compiler.h src/nuttx/include/nuttx/compiler.h
+--- tmp/nuttx/include/nuttx/compiler.h	2015-05-19 15:48:42.480743115 +0300
++++ src/nuttx/include/nuttx/compiler.h	2015-05-25 14:40:41.569019046 +0300
+@@ -474,7 +474,7 @@
+ # undef  CONFIG_CAN_PASS_STRUCTS
+ 
+ #endif
+-
++# undef  CONFIG_HAVE_LONG_LONG
+ /****************************************************************************
+  * Global Function Prototypes
+  ****************************************************************************/
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/tools/Config.mk src/nuttx/tools/Config.mk
 --- tmp/nuttx/tools/Config.mk	2015-05-19 15:48:42.636744627 +0300
 +++ src/nuttx/tools/Config.mk	2015-05-20 13:41:46.546022296 +0300
