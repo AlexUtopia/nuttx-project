@@ -1,6 +1,6 @@
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/configs/teensy/nsh/defconfig
---- tmp/nuttx/configs/teensy/nsh/defconfig	2015-05-19 15:48:42.348741841 +0300
-+++ src/nuttx/configs/teensy/nsh/defconfig	2015-05-27 17:11:23.922709458 +0300
+--- tmp/nuttx/configs/teensy/nsh/defconfig	2015-05-25 19:55:23.126821951 +0300
++++ src/nuttx/configs/teensy/nsh/defconfig	2015-05-27 22:15:40.904959332 +0300
 @@ -20,7 +20,8 @@ CONFIG_WINDOWS_CYGWIN=y
  #
  # Build Configuration
@@ -413,6 +413,15 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # Graphics Support
+@@ -329,7 +452,7 @@ CONFIG_DISABLE_PSEUDOFS_OPERATIONS=y
+ #
+ # Memory Management
+ #
+-# CONFIG_MM_SMALL is not set
++CONFIG_MM_SMALL=y
+ CONFIG_MM_REGIONS=1
+ # CONFIG_ARCH_HAVE_HEAP2 is not set
+ # CONFIG_GRAN is not set
 @@ -340,10 +463,9 @@ CONFIG_MM_REGIONS=1
  # CONFIG_AUDIO is not set
  
@@ -750,8 +759,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
 -#
  # CONFIG_SYSTEM_ZMODEM is not set
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/Make.defs src/nuttx/configs/teensy/nsh/Make.defs
---- tmp/nuttx/configs/teensy/nsh/Make.defs	2015-05-19 15:48:42.348741841 +0300
-+++ src/nuttx/configs/teensy/nsh/Make.defs	2015-05-26 13:16:10.648815875 +0300
+--- tmp/nuttx/configs/teensy/nsh/Make.defs	2015-05-25 19:55:23.126821951 +0300
++++ src/nuttx/configs/teensy/nsh/Make.defs	2015-05-27 21:49:54.165026054 +0300
 @@ -63,7 +63,7 @@ OBJCOPY = $(CROSSDEV)objcopy
  OBJDUMP = $(CROSSDEV)objdump
  
@@ -762,8 +771,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/Make.defs src/nuttx/
  
  ifneq ($(CONFIG_DEBUG_NOOPT),y)
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/src/at90usb_boot.c src/nuttx/configs/teensy/src/at90usb_boot.c
---- tmp/nuttx/configs/teensy/src/at90usb_boot.c	2015-05-19 15:48:42.348741841 +0300
-+++ src/nuttx/configs/teensy/src/at90usb_boot.c	2015-05-26 13:16:10.648815875 +0300
+--- tmp/nuttx/configs/teensy/src/at90usb_boot.c	2015-05-25 19:55:23.126821951 +0300
++++ src/nuttx/configs/teensy/src/at90usb_boot.c	2015-05-27 22:21:35.052944055 +0300
 @@ -42,6 +42,8 @@
  #include <debug.h>
  
@@ -773,7 +782,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/src/at90usb_boot.c src/n
  
  #include "up_arch.h"
  #include "up_internal.h"
-@@ -90,3 +92,77 @@ void at90usb_boardinitialize(void)
+@@ -90,3 +92,49 @@ void at90usb_boardinitialize(void)
    at90usb_ledinit();
  #endif
  }
@@ -796,64 +805,36 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/src/at90usb_boot.c src/n
 + *     Called from board_initialize().
 + *
 + ****************************************************************************/
-+#define PRINT(fmt, ...)    lowsyslog(0, fmt, ##__VA_ARGS__)
++
 +int board_app_initialize(void)
 +{
 +  struct spi_dev_s *spi;
 +  FAR struct mtd_dev_s *mtd;
 +  int ret;
 +
-+  PRINT("SPI init :");
 +  spi = up_spiinitialize(0);
 +  if (spi == NULL)
 +  {
-+    PRINT("FAIL\n");
 +    return -1;
 +  }
-+  PRINT("OK\n");
 +
-+  PRINT("M25P init : ");
 +  mtd = m25p_initialize(spi);
 +  if (!mtd)
 +  {
-+    PRINT("FAIL\n");
 +    return -1;
 +  }
-+  PRINT("OK\n");
-+#if 0
-+  PRINT("S512 init : ");
-+  mtd = /*s512_initialize*/mtd_rwb_initialize(mtd);
-+  if (!mtd)
-+  {
-+	PRINT("FAIL\n");
-+	return -1;
-+  }
-+  PRINT("OK\n");
-+#endif
-+  PRINT("Block device init : ");
++
 +  ret = ftl_initialize(0, mtd);
 +  if (ret < 0)
 +  {
-+    PRINT("FAIL\n");
 +    return -1;
 +  }
-+  PRINT("OK\n");
-+#if 0
-+  PRINT("Char device init : ");
-+  ret = bchdev_register("/dev/mtdblock0", "/dev/mtd0", false);
-+  if (ret < 0)
-+    {
-+      PRINT("FAIL\n");
-+      return -1;
-+    }
-+  PRINT("OK\n");
-+#endif
 +
 +  return 0;
 +}
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/src/at90usb_spi.c src/nuttx/configs/teensy/src/at90usb_spi.c
---- tmp/nuttx/configs/teensy/src/at90usb_spi.c	2015-05-19 15:48:42.348741841 +0300
-+++ src/nuttx/configs/teensy/src/at90usb_spi.c	2015-05-26 13:16:10.648815875 +0300
+--- tmp/nuttx/configs/teensy/src/at90usb_spi.c	2015-05-25 19:55:23.126821951 +0300
++++ src/nuttx/configs/teensy/src/at90usb_spi.c	2015-05-27 21:49:54.165026054 +0300
 @@ -178,6 +178,7 @@ void  avr_spiselect(FAR struct spi_dev_s
  uint8_t avr_spistatus(FAR struct spi_dev_s *dev, enum spi_dev_e devid)
  {
@@ -871,30 +852,9 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/src/at90usb_spi.c src/nu
    sspdbg("Returning %02x\n", ret);
    return ret;
  }
-diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/drivers/bch/bchdev_register.c src/nuttx/drivers/bch/bchdev_register.c
---- tmp/nuttx/drivers/bch/bchdev_register.c	2015-05-19 15:48:42.388742228 +0300
-+++ src/nuttx/drivers/bch/bchdev_register.c	2015-05-26 13:16:10.648815875 +0300
-@@ -86,7 +86,7 @@ int bchdev_register(FAR const char *blkd
-   ret = bchlib_setup(blkdev, readonly, &handle);
-   if (ret < 0)
-     {
--      fdbg("bchlib_setup failed: %d\n", -ret);
-+      lowsyslog(0,/*fdbg(*/"bchlib_setup failed: %d\n", -ret);
-       return ret;
-     }
- 
-@@ -95,7 +95,7 @@ int bchdev_register(FAR const char *blkd
-   ret = register_driver(chardev, &bch_fops, 0666, handle);
-   if (ret < 0)
-     {
--      fdbg("register_driver failed: %d\n", -ret);
-+	  lowsyslog(0,/*fdbg(*/"register_driver failed: %d\n", -ret);
-       bchlib_teardown(handle);
-       handle = NULL;
-     }
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/drivers/mtd/ftl.c src/nuttx/drivers/mtd/ftl.c
---- tmp/nuttx/drivers/mtd/ftl.c	2015-05-19 15:48:42.400742342 +0300
-+++ src/nuttx/drivers/mtd/ftl.c	2015-05-26 13:58:24.391557820 +0300
+--- tmp/nuttx/drivers/mtd/ftl.c	2015-05-25 19:55:23.178821949 +0300
++++ src/nuttx/drivers/mtd/ftl.c	2015-05-27 21:49:54.169026054 +0300
 @@ -78,6 +78,8 @@ struct ftl_struct_s
  #ifdef CONFIG_FS_WRITABLE
    FAR uint8_t          *eblock;  /* One, in-memory erase block */
@@ -1029,8 +989,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/drivers/mtd/ftl.c src/nuttx/drivers/mtd
  
        /* Get the number of R/W blocks per erase block */
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/drivers/mtd/m25px.c src/nuttx/drivers/mtd/m25px.c
---- tmp/nuttx/drivers/mtd/m25px.c	2015-05-19 15:48:42.404742380 +0300
-+++ src/nuttx/drivers/mtd/m25px.c	2015-05-26 13:16:10.660815994 +0300
+--- tmp/nuttx/drivers/mtd/m25px.c	2015-05-25 19:55:23.178821949 +0300
++++ src/nuttx/drivers/mtd/m25px.c	2015-05-27 21:49:54.169026054 +0300
 @@ -89,6 +89,7 @@
  #define M25P_MEMORY_TYPE           CONFIG_M25P_MEMORY_TYPE
  #define M25P_RES_ID                0x13
@@ -1121,8 +1081,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/drivers/mtd/m25px.c src/nuttx/drivers/m
          }
      }
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/fs/fat/fs_mkfatfs.c src/nuttx/fs/fat/fs_mkfatfs.c
---- tmp/nuttx/fs/fat/fs_mkfatfs.c	2015-05-19 15:48:42.448742807 +0300
-+++ src/nuttx/fs/fat/fs_mkfatfs.c	2015-05-26 13:16:10.660815994 +0300
+--- tmp/nuttx/fs/fat/fs_mkfatfs.c	2015-05-25 19:55:23.206821949 +0300
++++ src/nuttx/fs/fat/fs_mkfatfs.c	2015-05-27 21:49:54.169026054 +0300
 @@ -96,6 +96,16 @@ static inline int mkfatfs_getgeometry(FA
        return -ENODEV;
      }
@@ -1141,8 +1101,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/fs/fat/fs_mkfatfs.c src/nuttx/fs/fat/fs
     * the actual number of blocks on the device.
     */
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/fs/fat/fs_mkfatfs.h src/nuttx/fs/fat/fs_mkfatfs.h
---- tmp/nuttx/fs/fat/fs_mkfatfs.h	2015-05-19 15:48:42.448742807 +0300
-+++ src/nuttx/fs/fat/fs_mkfatfs.h	2015-05-26 13:16:10.660815994 +0300
+--- tmp/nuttx/fs/fat/fs_mkfatfs.h	2015-05-25 19:55:23.206821949 +0300
++++ src/nuttx/fs/fat/fs_mkfatfs.h	2015-05-27 21:49:54.169026054 +0300
 @@ -75,9 +75,9 @@
      var->fv_inode->u.i_bops->close(var->fv_inode) : \
      0
@@ -1164,8 +1124,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/fs/fat/fs_mkfatfs.h src/nuttx/fs/fat/fs
  
  /****************************************************************************
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/include/nuttx/compiler.h src/nuttx/include/nuttx/compiler.h
---- tmp/nuttx/include/nuttx/compiler.h	2015-05-19 15:48:42.480743115 +0300
-+++ src/nuttx/include/nuttx/compiler.h	2015-05-26 13:16:10.664816034 +0300
+--- tmp/nuttx/include/nuttx/compiler.h	2015-05-25 19:55:23.258821948 +0300
++++ src/nuttx/include/nuttx/compiler.h	2015-05-27 21:49:54.173026054 +0300
 @@ -474,7 +474,7 @@
  # undef  CONFIG_CAN_PASS_STRUCTS
  
@@ -1176,8 +1136,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/include/nuttx/compiler.h src/nuttx/incl
   * Global Function Prototypes
   ****************************************************************************/
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/tools/Config.mk src/nuttx/tools/Config.mk
---- tmp/nuttx/tools/Config.mk	2015-05-19 15:48:42.636744627 +0300
-+++ src/nuttx/tools/Config.mk	2015-05-26 13:16:10.672816114 +0300
+--- tmp/nuttx/tools/Config.mk	2015-05-25 19:55:23.410821944 +0300
++++ src/nuttx/tools/Config.mk	2015-05-27 22:17:22.060954969 +0300
 @@ -114,7 +114,7 @@ endef
  
  define COMPILE
@@ -1192,13 +1152,13 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/tools/Config.mk src/nuttx/tools/Config.
  define ASSEMBLE
  	@echo "AS: $1"
 -	$(Q) $(CC) -c $(AFLAGS) $1 -o $2
-+	$(CC) -c $(AFLAGS) $(addprefix $(shell pwd)/,$1) -o $(addprefix $(shell pwd)/,$2)
++	$(Q) $(CC) -c $(AFLAGS) $(addprefix $(shell pwd)/,$1) -o $(addprefix $(shell pwd)/,$2)
  endef
  
  # MOVEOBJ - Default macro to move an object file to the correct location
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/.version src/nuttx/.version
 --- tmp/nuttx/.version	1970-01-01 03:00:00.000000000 +0300
-+++ src/nuttx/.version	2015-05-26 13:16:10.672816114 +0300
++++ src/nuttx/.version	2015-05-27 21:49:54.173026054 +0300
 @@ -0,0 +1,6 @@
 +#!/bin/bash
 +
