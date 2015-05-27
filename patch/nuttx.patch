@@ -1,16 +1,17 @@
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/configs/teensy/nsh/defconfig
 --- tmp/nuttx/configs/teensy/nsh/defconfig	2015-05-19 15:48:42.348741841 +0300
-+++ src/nuttx/configs/teensy/nsh/defconfig	2015-05-26 17:38:09.488977665 +0300
-@@ -20,7 +20,7 @@ CONFIG_WINDOWS_CYGWIN=y
++++ src/nuttx/configs/teensy/nsh/defconfig	2015-05-27 17:11:23.922709458 +0300
+@@ -20,7 +20,8 @@ CONFIG_WINDOWS_CYGWIN=y
  #
  # Build Configuration
  #
 -# CONFIG_APPS_DIR="../apps"
++CONFIG_APPS_DIR="../apps"
 +CONFIG_BUILD_FLAT=y
  # CONFIG_BUILD_2PASS is not set
  
  #
-@@ -30,10 +30,12 @@ CONFIG_WINDOWS_CYGWIN=y
+@@ -30,10 +31,12 @@ CONFIG_WINDOWS_CYGWIN=y
  CONFIG_INTELHEX_BINARY=y
  # CONFIG_MOTOROLA_SREC is not set
  # CONFIG_RAW_BINARY is not set
@@ -23,7 +24,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_ARCH_STDBOOL_H is not set
  # CONFIG_ARCH_MATH_H is not set
  # CONFIG_ARCH_FLOAT_H is not set
-@@ -43,13 +45,15 @@ CONFIG_INTELHEX_BINARY=y
+@@ -43,13 +46,15 @@ CONFIG_INTELHEX_BINARY=y
  # Debug Options
  #
  # CONFIG_DEBUG is not set
@@ -39,11 +40,11 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
 -CONFIG_DEBUG_FULLOPT=y
 +CONFIG_DEBUG_CUSTOMOPT=y
 +# CONFIG_DEBUG_FULLOPT is not set
-+CONFIG_DEBUG_OPTLEVEL="-O0"
++CONFIG_DEBUG_OPTLEVEL="-Os"
  
  #
  # System Type
-@@ -67,14 +71,11 @@ CONFIG_ARCH_AVR=y
+@@ -67,14 +72,11 @@ CONFIG_ARCH_AVR=y
  CONFIG_ARCH="avr"
  CONFIG_ARCH_FAMILY="avr"
  CONFIG_ARCH_CHIP="at90usb"
@@ -62,7 +63,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # AVR Configuration Options
-@@ -85,16 +86,19 @@ CONFIG_AVR_BUILDROOT=y
+@@ -85,16 +87,19 @@ CONFIG_AVR_BUILDROOT=y
  #
  # AT90USB Configuration Options
  #
@@ -84,7 +85,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # Architecture Options
-@@ -103,10 +107,15 @@ CONFIG_ARCH_NOINTC=y
+@@ -103,10 +108,15 @@ CONFIG_ARCH_NOINTC=y
  # CONFIG_ARCH_VECNOTIRQ is not set
  # CONFIG_ARCH_DMA is not set
  # CONFIG_ARCH_HAVE_IRQPRIO is not set
@@ -101,7 +102,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  CONFIG_ARCH_STACKDUMP=y
  # CONFIG_ENDIAN_BIG is not set
  # CONFIG_ARCH_IDLE_CUSTOM is not set
-@@ -160,39 +169,75 @@ CONFIG_NSH_MMCSDMINOR=0
+@@ -160,39 +170,75 @@ CONFIG_NSH_MMCSDMINOR=0
  #
  # Board-Specific Options
  #
@@ -120,7 +121,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
 +CONFIG_DISABLE_PTHREAD=y
 +# CONFIG_DISABLE_SIGNALS is not set
 +CONFIG_DISABLE_MQUEUE=y
-+# CONFIG_DISABLE_ENVIRON is not set
++CONFIG_DISABLE_ENVIRON=y
 +
 +#
 +# Clocks and Timers
@@ -137,8 +138,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  CONFIG_START_YEAR=2010
  CONFIG_START_MONTH=6
  CONFIG_START_DAY=17
-+CONFIG_MAX_WDOGPARMS=2
-+CONFIG_PREALLOC_WDOGS=4
++CONFIG_MAX_WDOGPARMS=1
++CONFIG_PREALLOC_WDOGS=1
 +CONFIG_WDOG_INTRESERVE=0
 +CONFIG_PREALLOC_TIMERS=0
 +
@@ -151,7 +152,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
 +CONFIG_USER_ENTRYPOINT="nsh_main"
 +CONFIG_RR_INTERVAL=200
 +CONFIG_TASK_NAME_SIZE=0
-+CONFIG_MAX_TASKS=8
++CONFIG_MAX_TASKS=2
 +# CONFIG_SCHED_HAVE_PARENT is not set
 +# CONFIG_SCHED_WAITPID is not set
 +
@@ -168,11 +169,12 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
 -# CONFIG_MUTEX_TYPES is not set
 -# CONFIG_PRIORITY_INHERITANCE is not set
  # CONFIG_FDCLONE_DISABLE is not set
- # CONFIG_FDCLONE_STDIO is not set
+-# CONFIG_FDCLONE_STDIO is not set
++CONFIG_FDCLONE_STDIO=y
  CONFIG_SDCLONE_DISABLE=y
 -# CONFIG_SCHED_WAITPID is not set
-+CONFIG_NFILE_DESCRIPTORS=6
-+CONFIG_NFILE_STREAMS=6
++CONFIG_NFILE_DESCRIPTORS=4
++CONFIG_NFILE_STREAMS=4
 +CONFIG_NAME_MAX=32
 +# CONFIG_PRIORITY_INHERITANCE is not set
 +
@@ -193,7 +195,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # Signal Numbers
-@@ -202,43 +247,52 @@ CONFIG_SIG_SIGUSR2=2
+@@ -202,43 +248,52 @@ CONFIG_SIG_SIGUSR2=2
  CONFIG_SIG_SIGALARM=3
  
  #
@@ -249,7 +251,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_I2C is not set
 -# CONFIG_SPI is not set
 +CONFIG_SPI=y
-+# CONFIG_SPI_OWNBUS is not set
++CONFIG_SPI_OWNBUS=y
 +# CONFIG_SPI_EXCHANGE is not set
 +# CONFIG_SPI_CMDDATA is not set
 +# CONFIG_SPI_CALLBACK is not set
@@ -263,7 +265,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_RTC is not set
  # CONFIG_WATCHDOG is not set
  # CONFIG_ANALOG is not set
-@@ -248,7 +302,36 @@ CONFIG_DEV_NULL=y
+@@ -248,7 +303,36 @@ CONFIG_DEV_NULL=y
  # CONFIG_INPUT is not set
  # CONFIG_LCD is not set
  # CONFIG_MMCSD is not set
@@ -301,7 +303,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_PIPES is not set
  # CONFIG_PM is not set
  # CONFIG_POWER is not set
-@@ -257,7 +340,28 @@ CONFIG_DEV_NULL=y
+@@ -257,7 +341,28 @@ CONFIG_DEV_NULL=y
  CONFIG_SERIAL=y
  # CONFIG_DEV_LOWCONSOLE is not set
  # CONFIG_16550_UART is not set
@@ -330,7 +332,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # USART Configuration
-@@ -265,22 +369,24 @@ CONFIG_ARCH_HAVE_USART1=y
+@@ -265,22 +370,24 @@ CONFIG_ARCH_HAVE_USART1=y
  CONFIG_USART1_ISUART=y
  CONFIG_MCU_SERIAL=y
  CONFIG_STANDARD_SERIAL=y
@@ -346,7 +348,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  #
 -CONFIG_USART1_RXBUFSIZE=256
 -CONFIG_USART1_TXBUFSIZE=256
-+CONFIG_USART1_RXBUFSIZE=32
++CONFIG_USART1_RXBUFSIZE=16
 +CONFIG_USART1_TXBUFSIZE=8
  CONFIG_USART1_BAUD=38400
  CONFIG_USART1_BITS=8
@@ -359,7 +361,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_USBDEV is not set
  # CONFIG_USBHOST is not set
  # CONFIG_WIRELESS is not set
-@@ -293,6 +399,7 @@ CONFIG_USART1_2STOP=0
+@@ -293,6 +400,7 @@ CONFIG_USART1_2STOP=0
  # System Logging
  #
  # CONFIG_RAMLOG is not set
@@ -367,7 +369,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # Networking Support
-@@ -302,24 +409,39 @@ CONFIG_USART1_2STOP=0
+@@ -302,24 +410,39 @@ CONFIG_USART1_2STOP=0
  # CONFIG_NET is not set
  
  #
@@ -411,7 +413,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # Graphics Support
-@@ -340,7 +462,7 @@ CONFIG_MM_REGIONS=1
+@@ -340,10 +463,9 @@ CONFIG_MM_REGIONS=1
  # CONFIG_AUDIO is not set
  
  #
@@ -419,8 +421,15 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
 +# Binary Loader
  #
  # CONFIG_BINFMT_DISABLE is not set
- # CONFIG_BINFMT_EXEPATH is not set
-@@ -364,6 +486,7 @@ CONFIG_LIB_HOMEDIR="/"
+-# CONFIG_BINFMT_EXEPATH is not set
+ # CONFIG_NXFLAT is not set
+ # CONFIG_ELF is not set
+ # CONFIG_BUILTIN is not set
+@@ -360,10 +482,10 @@ CONFIG_MM_REGIONS=1
+ CONFIG_STDIO_BUFFER_SIZE=0
+ CONFIG_STDIO_LINEBUFFER=y
+ CONFIG_NUNGET_CHARS=0
+-CONFIG_LIB_HOMEDIR="/"
  # CONFIG_LIBM is not set
  CONFIG_NOPRINTF_FIELDWIDTH=y
  # CONFIG_LIBC_FLOATINGPOINT is not set
@@ -428,19 +437,18 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  CONFIG_LIB_RAND_ORDER=1
  # CONFIG_EOL_IS_CR is not set
  # CONFIG_EOL_IS_LF is not set
-@@ -374,7 +497,11 @@ CONFIG_POSIX_SPAWN_PROXY_STACKSIZE=1024
+@@ -374,7 +496,10 @@ CONFIG_POSIX_SPAWN_PROXY_STACKSIZE=1024
  CONFIG_TASK_SPAWN_DEFAULT_STACKSIZE=2048
  # CONFIG_LIBC_STRERROR is not set
  # CONFIG_LIBC_PERROR_STDOUT is not set
 +CONFIG_LIBC_TMPDIR="/tmp"
 +CONFIG_LIBC_MAX_TMPFILE=32
  CONFIG_ARCH_LOWPUTC=y
-+# CONFIG_LIBC_LOCALTIME is not set
 +# CONFIG_TIME_EXTENDED is not set
  CONFIG_LIB_SENDFILE_BUFSIZE=512
  # CONFIG_ARCH_ROMGETC is not set
  # CONFIG_ARCH_OPTIMIZED_FUNCTIONS is not set
-@@ -382,7 +509,6 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
+@@ -382,7 +507,6 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
  #
  # Non-standard Library Support
  #
@@ -448,7 +456,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_LIB_KBDCODEC is not set
  # CONFIG_LIB_SLCDCODEC is not set
  
-@@ -406,6 +532,7 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
+@@ -406,6 +530,7 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
  # CONFIG_EXAMPLES_BUTTONS is not set
  # CONFIG_EXAMPLES_CAN is not set
  # CONFIG_EXAMPLES_CONFIGDATA is not set
@@ -456,7 +464,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_EXAMPLES_DHCPD is not set
  # CONFIG_EXAMPLES_ELF is not set
  # CONFIG_EXAMPLES_FTPC is not set
-@@ -416,7 +543,6 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
+@@ -416,7 +541,6 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
  # CONFIG_EXAMPLES_HIDKBD is not set
  # CONFIG_EXAMPLES_KEYPADTEST is not set
  # CONFIG_EXAMPLES_IGMP is not set
@@ -464,7 +472,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_EXAMPLES_MM is not set
  # CONFIG_EXAMPLES_MODBUS is not set
  # CONFIG_EXAMPLES_MOUNT is not set
-@@ -432,14 +558,16 @@ CONFIG_EXAMPLES_NSH=y
+@@ -432,14 +556,16 @@ CONFIG_EXAMPLES_NSH=y
  # CONFIG_EXAMPLES_NXLINES is not set
  # CONFIG_EXAMPLES_NXTEXT is not set
  # CONFIG_EXAMPLES_OSTEST is not set
@@ -482,7 +490,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_EXAMPLES_SERLOOP is not set
  # CONFIG_EXAMPLES_SLCD is not set
  # CONFIG_EXAMPLES_SMART is not set
-@@ -448,7 +576,6 @@ CONFIG_EXAMPLES_NSH=y
+@@ -448,7 +574,6 @@ CONFIG_EXAMPLES_NSH=y
  # CONFIG_EXAMPLES_THTTPD is not set
  # CONFIG_EXAMPLES_TIFF is not set
  # CONFIG_EXAMPLES_TOUCHSCREEN is not set
@@ -490,7 +498,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_EXAMPLES_WEBSERVER is not set
  # CONFIG_EXAMPLES_USBSERIAL is not set
  # CONFIG_EXAMPLES_USBTERM is not set
-@@ -458,12 +585,15 @@ CONFIG_EXAMPLES_NSH=y
+@@ -458,12 +583,15 @@ CONFIG_EXAMPLES_NSH=y
  # Graphics Support
  #
  # CONFIG_TIFF is not set
@@ -506,7 +514,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # Network Utilities
-@@ -473,15 +603,11 @@ CONFIG_EXAMPLES_NSH=y
+@@ -473,15 +601,11 @@ CONFIG_EXAMPLES_NSH=y
  # Networking Utilities
  #
  # CONFIG_NETUTILS_CODECS is not set
@@ -523,7 +531,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # FreeModBus
-@@ -492,50 +618,64 @@ CONFIG_EXAMPLES_NSH=y
+@@ -492,50 +616,64 @@ CONFIG_EXAMPLES_NSH=y
  # NSH Library
  #
  CONFIG_NSH_LIBRARY=y
@@ -608,7 +616,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  CONFIG_NSH_DISABLE_WGET=y
  CONFIG_NSH_DISABLE_XD=y
  
-@@ -543,21 +683,19 @@ CONFIG_NSH_DISABLE_XD=y
+@@ -543,21 +681,19 @@ CONFIG_NSH_DISABLE_XD=y
  # Configure Command Options
  #
  CONFIG_NSH_CODECS_BUFSIZE=128
@@ -638,7 +646,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # NxWidgets/NxWM
-@@ -571,97 +709,23 @@ CONFIG_NSH_CONSOLE=y
+@@ -571,97 +707,19 @@ CONFIG_NSH_CONSOLE=y
  #
  # System Libraries and NSH Add-Ons
  #
@@ -728,13 +736,11 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
 -# VI Work-Alike Editor
 -#
  # CONFIG_SYSTEM_VI is not set
-+# CONFIG_SYSTEM_ZMODEM is not set
- 
+-
 -#
 -# Stack Monitor
 -#
-+# Application configuration
- 
+-
 -#
 -# USB Mass Storage Device Commands
 -#
@@ -742,8 +748,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
 -#
 -# Zmodem Commands
 -#
--# CONFIG_SYSTEM_ZMODEM is not set
-+CONFIG_APPS_DIR="../apps"
+ # CONFIG_SYSTEM_ZMODEM is not set
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/Make.defs src/nuttx/configs/teensy/nsh/Make.defs
 --- tmp/nuttx/configs/teensy/nsh/Make.defs	2015-05-19 15:48:42.348741841 +0300
 +++ src/nuttx/configs/teensy/nsh/Make.defs	2015-05-26 13:16:10.648815875 +0300
