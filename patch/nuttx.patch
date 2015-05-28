@@ -1,6 +1,6 @@
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/configs/teensy/nsh/defconfig
---- tmp/nuttx/configs/teensy/nsh/defconfig	2015-05-25 19:55:23.126821951 +0300
-+++ src/nuttx/configs/teensy/nsh/defconfig	2015-05-27 22:15:40.904959332 +0300
+--- tmp/nuttx/configs/teensy/nsh/defconfig	2015-05-19 15:48:42.348741841 +0300
++++ src/nuttx/configs/teensy/nsh/defconfig	2015-05-28 09:53:50.503649024 +0300
 @@ -20,7 +20,8 @@ CONFIG_WINDOWS_CYGWIN=y
  #
  # Build Configuration
@@ -759,8 +759,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
 -#
  # CONFIG_SYSTEM_ZMODEM is not set
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/Make.defs src/nuttx/configs/teensy/nsh/Make.defs
---- tmp/nuttx/configs/teensy/nsh/Make.defs	2015-05-25 19:55:23.126821951 +0300
-+++ src/nuttx/configs/teensy/nsh/Make.defs	2015-05-27 21:49:54.165026054 +0300
+--- tmp/nuttx/configs/teensy/nsh/Make.defs	2015-05-19 15:48:42.348741841 +0300
++++ src/nuttx/configs/teensy/nsh/Make.defs	2015-05-28 09:53:50.503649024 +0300
 @@ -63,7 +63,7 @@ OBJCOPY = $(CROSSDEV)objcopy
  OBJDUMP = $(CROSSDEV)objdump
  
@@ -771,8 +771,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/Make.defs src/nuttx/
  
  ifneq ($(CONFIG_DEBUG_NOOPT),y)
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/src/at90usb_boot.c src/nuttx/configs/teensy/src/at90usb_boot.c
---- tmp/nuttx/configs/teensy/src/at90usb_boot.c	2015-05-25 19:55:23.126821951 +0300
-+++ src/nuttx/configs/teensy/src/at90usb_boot.c	2015-05-27 22:21:35.052944055 +0300
+--- tmp/nuttx/configs/teensy/src/at90usb_boot.c	2015-05-19 15:48:42.348741841 +0300
++++ src/nuttx/configs/teensy/src/at90usb_boot.c	2015-05-28 09:53:50.503649024 +0300
 @@ -42,6 +42,8 @@
  #include <debug.h>
  
@@ -833,8 +833,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/src/at90usb_boot.c src/n
 +  return 0;
 +}
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/src/at90usb_spi.c src/nuttx/configs/teensy/src/at90usb_spi.c
---- tmp/nuttx/configs/teensy/src/at90usb_spi.c	2015-05-25 19:55:23.126821951 +0300
-+++ src/nuttx/configs/teensy/src/at90usb_spi.c	2015-05-27 21:49:54.165026054 +0300
+--- tmp/nuttx/configs/teensy/src/at90usb_spi.c	2015-05-19 15:48:42.348741841 +0300
++++ src/nuttx/configs/teensy/src/at90usb_spi.c	2015-05-28 09:53:50.503649024 +0300
 @@ -178,6 +178,7 @@ void  avr_spiselect(FAR struct spi_dev_s
  uint8_t avr_spistatus(FAR struct spi_dev_s *dev, enum spi_dev_e devid)
  {
@@ -853,8 +853,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/src/at90usb_spi.c src/nu
    return ret;
  }
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/drivers/mtd/ftl.c src/nuttx/drivers/mtd/ftl.c
---- tmp/nuttx/drivers/mtd/ftl.c	2015-05-25 19:55:23.178821949 +0300
-+++ src/nuttx/drivers/mtd/ftl.c	2015-05-27 21:49:54.169026054 +0300
+--- tmp/nuttx/drivers/mtd/ftl.c	2015-05-19 15:48:42.400742342 +0300
++++ src/nuttx/drivers/mtd/ftl.c	2015-05-28 09:53:50.507649064 +0300
 @@ -78,6 +78,8 @@ struct ftl_struct_s
  #ifdef CONFIG_FS_WRITABLE
    FAR uint8_t          *eblock;  /* One, in-memory erase block */
@@ -989,8 +989,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/drivers/mtd/ftl.c src/nuttx/drivers/mtd
  
        /* Get the number of R/W blocks per erase block */
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/drivers/mtd/m25px.c src/nuttx/drivers/mtd/m25px.c
---- tmp/nuttx/drivers/mtd/m25px.c	2015-05-25 19:55:23.178821949 +0300
-+++ src/nuttx/drivers/mtd/m25px.c	2015-05-27 21:49:54.169026054 +0300
+--- tmp/nuttx/drivers/mtd/m25px.c	2015-05-19 15:48:42.404742380 +0300
++++ src/nuttx/drivers/mtd/m25px.c	2015-05-28 09:54:37.892121639 +0300
 @@ -89,6 +89,7 @@
  #define M25P_MEMORY_TYPE           CONFIG_M25P_MEMORY_TYPE
  #define M25P_RES_ID                0x13
@@ -1042,15 +1042,6 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/drivers/mtd/m25px.c src/nuttx/drivers/m
  
  /* NOTE 1: All parts.
   * NOTE 2: M25P632/M25P64
-@@ -325,7 +338,7 @@ static inline int m25p_readid(struct m25
-   SPI_SELECT(priv->dev, SPIDEV_FLASH, false);
-   m25p_unlock(priv->dev);
- 
--  fvdbg("manufacturer: %02x memory: %02x capacity: %02x\n",
-+  lowsyslog(0,/*fvdbg(*/"manufacturer: %02x memory: %02x capacity: %02x\n",
-         manufacturer, memory, capacity);
- 
-   /* Check for a valid manufacturer and memory type */
 @@ -348,6 +361,19 @@ static inline int m25p_readid(struct m25
             priv->npages         = M25P_M25P1_NPAGES;
             return OK;
@@ -1080,52 +1071,9 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/drivers/mtd/m25px.c src/nuttx/drivers/m
            m25p_lock(priv->dev);
          }
      }
-diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/fs/fat/fs_mkfatfs.c src/nuttx/fs/fat/fs_mkfatfs.c
---- tmp/nuttx/fs/fat/fs_mkfatfs.c	2015-05-25 19:55:23.206821949 +0300
-+++ src/nuttx/fs/fat/fs_mkfatfs.c	2015-05-27 21:49:54.169026054 +0300
-@@ -96,6 +96,16 @@ static inline int mkfatfs_getgeometry(FA
-       return -ENODEV;
-     }
- 
-+  /* Support M25P flashes geometry to 512 bytes sectors */
-+
-+  var->fv_sectorscale = 1;
-+  if (geometry.geo_sectorsize == 256)
-+    {
-+      geometry.geo_nsectors /= 2;
-+      geometry.geo_sectorsize *= 2;
-+      var->fv_sectorscale = 2;
-+    }
-+
-   /* Check if the user provided maxblocks was provided and, if so, that is it less than
-    * the actual number of blocks on the device.
-    */
-diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/fs/fat/fs_mkfatfs.h src/nuttx/fs/fat/fs_mkfatfs.h
---- tmp/nuttx/fs/fat/fs_mkfatfs.h	2015-05-25 19:55:23.206821949 +0300
-+++ src/nuttx/fs/fat/fs_mkfatfs.h	2015-05-27 21:49:54.169026054 +0300
-@@ -75,9 +75,9 @@
-     var->fv_inode->u.i_bops->close(var->fv_inode) : \
-     0
- #define DEV_READ(buf, sect, nsect) \
--    var->fv_inode->u.i_bops->read(var->fv_inode, buf, sect, nsect)
-+    var->fv_inode->u.i_bops->read(var->fv_inode, buf, sect * var->fv_sectorscale, nsect * var->fv_sectorscale)
- #define DEV_WRITE(buf, sect, nsect) \
--    var->fv_inode->u.i_bops->write(var->fv_inode, buf, sect, nsect)
-+    var->fv_inode->u.i_bops->write(var->fv_inode, buf, sect * var->fv_sectorscale, nsect * var->fv_sectorscale)
- #define DEV_GEOMETRY(geo) \
-     var->fv_inode->u.i_bops->geometry(var->fv_inode, &geo)
- #define DEV_IOCTL(cmd, arg) \
-@@ -107,6 +107,7 @@ struct fat_var_s
-    uint32_t       fv_nclusters;      /* Number of clusters */
-    uint8_t       *fv_sect;           /* Allocated working sector buffer */
-    const uint8_t *fv_bootcode;       /* Points to boot code to put into MBR */
-+   uint8_t        fv_sectorscale;    /*  */
- };
- 
- /****************************************************************************
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/include/nuttx/compiler.h src/nuttx/include/nuttx/compiler.h
---- tmp/nuttx/include/nuttx/compiler.h	2015-05-25 19:55:23.258821948 +0300
-+++ src/nuttx/include/nuttx/compiler.h	2015-05-27 21:49:54.173026054 +0300
+--- tmp/nuttx/include/nuttx/compiler.h	2015-05-19 15:48:42.480743115 +0300
++++ src/nuttx/include/nuttx/compiler.h	2015-05-28 09:53:50.507649064 +0300
 @@ -474,7 +474,7 @@
  # undef  CONFIG_CAN_PASS_STRUCTS
  
@@ -1136,8 +1084,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/include/nuttx/compiler.h src/nuttx/incl
   * Global Function Prototypes
   ****************************************************************************/
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/tools/Config.mk src/nuttx/tools/Config.mk
---- tmp/nuttx/tools/Config.mk	2015-05-25 19:55:23.410821944 +0300
-+++ src/nuttx/tools/Config.mk	2015-05-27 22:17:22.060954969 +0300
+--- tmp/nuttx/tools/Config.mk	2015-05-19 15:48:42.636744627 +0300
++++ src/nuttx/tools/Config.mk	2015-05-28 09:53:50.507649064 +0300
 @@ -114,7 +114,7 @@ endef
  
  define COMPILE
@@ -1158,7 +1106,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/tools/Config.mk src/nuttx/tools/Config.
  # MOVEOBJ - Default macro to move an object file to the correct location
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/.version src/nuttx/.version
 --- tmp/nuttx/.version	1970-01-01 03:00:00.000000000 +0300
-+++ src/nuttx/.version	2015-05-27 21:49:54.173026054 +0300
++++ src/nuttx/.version	2015-05-28 09:53:50.507649064 +0300
 @@ -0,0 +1,6 @@
 +#!/bin/bash
 +
