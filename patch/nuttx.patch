@@ -1,6 +1,6 @@
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/configs/teensy/nsh/defconfig
---- tmp/nuttx/configs/teensy/nsh/defconfig	2015-05-19 15:48:42.348741841 +0300
-+++ src/nuttx/configs/teensy/nsh/defconfig	2015-05-28 09:53:50.503649024 +0300
+--- tmp/nuttx/configs/teensy/nsh/defconfig	2015-05-25 19:55:23.126821951 +0300
++++ src/nuttx/configs/teensy/nsh/defconfig	2015-05-31 20:27:25.631100442 +0300
 @@ -20,7 +20,8 @@ CONFIG_WINDOWS_CYGWIN=y
  #
  # Build Configuration
@@ -40,7 +40,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
 -CONFIG_DEBUG_FULLOPT=y
 +CONFIG_DEBUG_CUSTOMOPT=y
 +# CONFIG_DEBUG_FULLOPT is not set
-+CONFIG_DEBUG_OPTLEVEL="-Os"
++CONFIG_DEBUG_OPTLEVEL="-O0"
  
  #
  # System Type
@@ -78,7 +78,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
 -# CONFIG_AVR_SPI is not set
 +CONFIG_AVR_SPI=y
  CONFIG_AVR_USART1=y
- # CONFIG_AVR_USBDEV is not set
+-# CONFIG_AVR_USBDEV is not set
++CONFIG_AVR_USBDEV=y
  # CONFIG_AVR_WDT is not set
  # CONFIG_AVR_GPIOIRQ is not set
 -# CONFIG_AVR_USART0 is not set
@@ -102,7 +103,12 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  CONFIG_ARCH_STACKDUMP=y
  # CONFIG_ENDIAN_BIG is not set
  # CONFIG_ARCH_IDLE_CUSTOM is not set
-@@ -160,39 +170,75 @@ CONFIG_NSH_MMCSDMINOR=0
+@@ -155,44 +165,79 @@ CONFIG_ARCH_BOARD="teensy"
+ #
+ CONFIG_ARCH_HAVE_LEDS=y
+ CONFIG_ARCH_LEDS=y
+-CONFIG_NSH_MMCSDMINOR=0
+ 
  #
  # Board-Specific Options
  #
@@ -149,10 +155,10 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
 +# CONFIG_INIT_NONE is not set
 +CONFIG_INIT_ENTRYPOINT=y
 +# CONFIG_INIT_FILEPATH is not set
-+CONFIG_USER_ENTRYPOINT="nsh_main"
++CONFIG_USER_ENTRYPOINT="msconn_main"
 +CONFIG_RR_INTERVAL=200
 +CONFIG_TASK_NAME_SIZE=0
-+CONFIG_MAX_TASKS=2
++CONFIG_MAX_TASKS=4
 +# CONFIG_SCHED_HAVE_PARENT is not set
 +# CONFIG_SCHED_WAITPID is not set
 +
@@ -195,7 +201,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # Signal Numbers
-@@ -202,43 +248,52 @@ CONFIG_SIG_SIGUSR2=2
+@@ -202,43 +247,52 @@ CONFIG_SIG_SIGUSR2=2
  CONFIG_SIG_SIGALARM=3
  
  #
@@ -265,7 +271,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_RTC is not set
  # CONFIG_WATCHDOG is not set
  # CONFIG_ANALOG is not set
-@@ -248,7 +303,36 @@ CONFIG_DEV_NULL=y
+@@ -248,7 +302,36 @@ CONFIG_DEV_NULL=y
  # CONFIG_INPUT is not set
  # CONFIG_LCD is not set
  # CONFIG_MMCSD is not set
@@ -303,7 +309,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_PIPES is not set
  # CONFIG_PM is not set
  # CONFIG_POWER is not set
-@@ -257,7 +341,28 @@ CONFIG_DEV_NULL=y
+@@ -257,7 +340,28 @@ CONFIG_DEV_NULL=y
  CONFIG_SERIAL=y
  # CONFIG_DEV_LOWCONSOLE is not set
  # CONFIG_16550_UART is not set
@@ -332,7 +338,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # USART Configuration
-@@ -265,22 +370,24 @@ CONFIG_ARCH_HAVE_USART1=y
+@@ -265,23 +369,60 @@ CONFIG_ARCH_HAVE_USART1=y
  CONFIG_USART1_ISUART=y
  CONFIG_MCU_SERIAL=y
  CONFIG_STANDARD_SERIAL=y
@@ -358,10 +364,47 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_USART1_OFLOWCONTROL is not set
 -# CONFIG_SERIAL_IFLOWCONTROL is not set
 -# CONFIG_SERIAL_OFLOWCONTROL is not set
- # CONFIG_USBDEV is not set
+-# CONFIG_USBDEV is not set
++CONFIG_USBDEV=y
++
++#
++# USB Device Controller Driver Options
++#
++# CONFIG_USBDEV_ISOCHRONOUS is not set
++# CONFIG_USBDEV_DUALSPEED is not set
++CONFIG_USBDEV_SELFPOWERED=y
++# CONFIG_USBDEV_BUSPOWERED is not set
++CONFIG_USBDEV_MAXPOWER=100
++# CONFIG_USBDEV_DMA is not set
++# CONFIG_ARCH_USBDEV_STALLQUEUE is not set
++# CONFIG_USBDEV_TRACE is not set
++
++#
++# USB Device Class Driver Options
++#
++# CONFIG_USBDEV_COMPOSITE is not set
++# CONFIG_PL2303 is not set
++# CONFIG_CDCACM is not set
++CONFIG_USBMSC=y
++CONFIG_USBMSC_EP0MAXPACKET=64
++CONFIG_USBMSC_EPBULKOUT=2
++CONFIG_USBMSC_EPBULKIN=3
++CONFIG_USBMSC_NWRREQS=4
++CONFIG_USBMSC_NRDREQS=4
++CONFIG_USBMSC_BULKINREQLEN=64
++CONFIG_USBMSC_BULKOUTREQLEN=64
++CONFIG_USBMSC_VENDORID=0x584e
++CONFIG_USBMSC_VENDORSTR="NuttX"
++CONFIG_USBMSC_PRODUCTID=0x5342
++CONFIG_USBMSC_PRODUCTSTR="Mass Storage"
++CONFIG_USBMSC_VERSIONNO=0x399
++# CONFIG_USBMSC_REMOVABLE is not set
++CONFIG_USBMSC_SCSI_PRIO=128
++CONFIG_USBMSC_SCSI_STACKSIZE=2048
  # CONFIG_USBHOST is not set
  # CONFIG_WIRELESS is not set
-@@ -293,6 +400,7 @@ CONFIG_USART1_2STOP=0
+ 
+@@ -293,6 +434,7 @@ CONFIG_USART1_2STOP=0
  # System Logging
  #
  # CONFIG_RAMLOG is not set
@@ -369,7 +412,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # Networking Support
-@@ -302,24 +410,39 @@ CONFIG_USART1_2STOP=0
+@@ -302,24 +444,39 @@ CONFIG_USART1_2STOP=0
  # CONFIG_NET is not set
  
  #
@@ -413,7 +456,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # Graphics Support
-@@ -329,7 +452,7 @@ CONFIG_DISABLE_PSEUDOFS_OPERATIONS=y
+@@ -329,7 +486,7 @@ CONFIG_DISABLE_PSEUDOFS_OPERATIONS=y
  #
  # Memory Management
  #
@@ -422,7 +465,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  CONFIG_MM_REGIONS=1
  # CONFIG_ARCH_HAVE_HEAP2 is not set
  # CONFIG_GRAN is not set
-@@ -340,10 +463,9 @@ CONFIG_MM_REGIONS=1
+@@ -340,10 +497,9 @@ CONFIG_MM_REGIONS=1
  # CONFIG_AUDIO is not set
  
  #
@@ -434,7 +477,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_NXFLAT is not set
  # CONFIG_ELF is not set
  # CONFIG_BUILTIN is not set
-@@ -360,10 +482,10 @@ CONFIG_MM_REGIONS=1
+@@ -360,10 +516,10 @@ CONFIG_MM_REGIONS=1
  CONFIG_STDIO_BUFFER_SIZE=0
  CONFIG_STDIO_LINEBUFFER=y
  CONFIG_NUNGET_CHARS=0
@@ -446,7 +489,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  CONFIG_LIB_RAND_ORDER=1
  # CONFIG_EOL_IS_CR is not set
  # CONFIG_EOL_IS_LF is not set
-@@ -374,7 +496,10 @@ CONFIG_POSIX_SPAWN_PROXY_STACKSIZE=1024
+@@ -374,7 +530,10 @@ CONFIG_POSIX_SPAWN_PROXY_STACKSIZE=1024
  CONFIG_TASK_SPAWN_DEFAULT_STACKSIZE=2048
  # CONFIG_LIBC_STRERROR is not set
  # CONFIG_LIBC_PERROR_STDOUT is not set
@@ -457,7 +500,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  CONFIG_LIB_SENDFILE_BUFSIZE=512
  # CONFIG_ARCH_ROMGETC is not set
  # CONFIG_ARCH_OPTIMIZED_FUNCTIONS is not set
-@@ -382,7 +507,6 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
+@@ -382,7 +541,6 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
  #
  # Non-standard Library Support
  #
@@ -465,7 +508,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_LIB_KBDCODEC is not set
  # CONFIG_LIB_SLCDCODEC is not set
  
-@@ -406,6 +530,7 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
+@@ -406,6 +564,7 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
  # CONFIG_EXAMPLES_BUTTONS is not set
  # CONFIG_EXAMPLES_CAN is not set
  # CONFIG_EXAMPLES_CONFIGDATA is not set
@@ -473,7 +516,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_EXAMPLES_DHCPD is not set
  # CONFIG_EXAMPLES_ELF is not set
  # CONFIG_EXAMPLES_FTPC is not set
-@@ -416,7 +541,6 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
+@@ -416,12 +575,11 @@ CONFIG_LIB_SENDFILE_BUFSIZE=512
  # CONFIG_EXAMPLES_HIDKBD is not set
  # CONFIG_EXAMPLES_KEYPADTEST is not set
  # CONFIG_EXAMPLES_IGMP is not set
@@ -481,7 +524,13 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_EXAMPLES_MM is not set
  # CONFIG_EXAMPLES_MODBUS is not set
  # CONFIG_EXAMPLES_MOUNT is not set
-@@ -432,14 +556,16 @@ CONFIG_EXAMPLES_NSH=y
+ # CONFIG_EXAMPLES_NRF24L01TERM is not set
+-CONFIG_EXAMPLES_NSH=y
++# CONFIG_EXAMPLES_NSH is not set
+ # CONFIG_EXAMPLES_NULL is not set
+ # CONFIG_EXAMPLES_NX is not set
+ # CONFIG_EXAMPLES_NXTERM is not set
+@@ -432,14 +590,16 @@ CONFIG_EXAMPLES_NSH=y
  # CONFIG_EXAMPLES_NXLINES is not set
  # CONFIG_EXAMPLES_NXTEXT is not set
  # CONFIG_EXAMPLES_OSTEST is not set
@@ -499,7 +548,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_EXAMPLES_SERLOOP is not set
  # CONFIG_EXAMPLES_SLCD is not set
  # CONFIG_EXAMPLES_SMART is not set
-@@ -448,7 +574,6 @@ CONFIG_EXAMPLES_NSH=y
+@@ -448,7 +608,6 @@ CONFIG_EXAMPLES_NSH=y
  # CONFIG_EXAMPLES_THTTPD is not set
  # CONFIG_EXAMPLES_TIFF is not set
  # CONFIG_EXAMPLES_TOUCHSCREEN is not set
@@ -507,7 +556,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  # CONFIG_EXAMPLES_WEBSERVER is not set
  # CONFIG_EXAMPLES_USBSERIAL is not set
  # CONFIG_EXAMPLES_USBTERM is not set
-@@ -458,12 +583,15 @@ CONFIG_EXAMPLES_NSH=y
+@@ -458,12 +617,15 @@ CONFIG_EXAMPLES_NSH=y
  # Graphics Support
  #
  # CONFIG_TIFF is not set
@@ -523,7 +572,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # Network Utilities
-@@ -473,15 +601,11 @@ CONFIG_EXAMPLES_NSH=y
+@@ -473,15 +635,11 @@ CONFIG_EXAMPLES_NSH=y
  # Networking Utilities
  #
  # CONFIG_NETUTILS_CODECS is not set
@@ -540,68 +589,45 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
  
  #
  # FreeModBus
-@@ -492,50 +616,64 @@ CONFIG_EXAMPLES_NSH=y
+@@ -491,73 +649,7 @@ CONFIG_EXAMPLES_NSH=y
+ #
  # NSH Library
  #
- CONFIG_NSH_LIBRARY=y
-+
-+#
-+# Command Line Configuration
-+#
- CONFIG_NSH_READLINE=y
- # CONFIG_NSH_CLE is not set
-+CONFIG_NSH_LINELEN=64
-+CONFIG_NSH_DISABLE_SEMICOLON=y
-+# CONFIG_NSH_CMDPARMS is not set
-+CONFIG_NSH_MAXARGUMENTS=6
-+# CONFIG_NSH_ARGCAT is not set
-+CONFIG_NSH_NESTDEPTH=3
-+# CONFIG_NSH_DISABLEBG is not set
- 
- #
- # Disable Individual commands
- #
- CONFIG_NSH_DISABLE_ADDROUTE=y
- # CONFIG_NSH_DISABLE_CAT is not set
+-CONFIG_NSH_LIBRARY=y
+-CONFIG_NSH_READLINE=y
+-# CONFIG_NSH_CLE is not set
+-
+-#
+-# Disable Individual commands
+-#
+-CONFIG_NSH_DISABLE_ADDROUTE=y
+-# CONFIG_NSH_DISABLE_CAT is not set
 -# CONFIG_NSH_DISABLE_CD is not set
 -# CONFIG_NSH_DISABLE_CP is not set
-+CONFIG_NSH_DISABLE_CD=y
-+CONFIG_NSH_DISABLE_CP=y
- CONFIG_NSH_DISABLE_CMP=y
-+CONFIG_NSH_DISABLE_DATE=y
- CONFIG_NSH_DISABLE_DD=y
- CONFIG_NSH_DISABLE_DF=y
- CONFIG_NSH_DISABLE_DELROUTE=y
- # CONFIG_NSH_DISABLE_ECHO is not set
- CONFIG_NSH_DISABLE_EXEC=y
- CONFIG_NSH_DISABLE_EXIT=y
+-CONFIG_NSH_DISABLE_CMP=y
+-CONFIG_NSH_DISABLE_DD=y
+-CONFIG_NSH_DISABLE_DF=y
+-CONFIG_NSH_DISABLE_DELROUTE=y
+-# CONFIG_NSH_DISABLE_ECHO is not set
+-CONFIG_NSH_DISABLE_EXEC=y
+-CONFIG_NSH_DISABLE_EXIT=y
 -# CONFIG_NSH_DISABLE_FREE is not set
-+CONFIG_NSH_DISABLE_FREE=y
- CONFIG_NSH_DISABLE_GET=y
+-CONFIG_NSH_DISABLE_GET=y
 -# CONFIG_NSH_DISABLE_HELP is not set
-+CONFIG_NSH_DISABLE_HELP=y
- CONFIG_NSH_DISABLE_HEXDUMP=y
+-CONFIG_NSH_DISABLE_HEXDUMP=y
 -# CONFIG_NSH_DISABLE_IFCONFIG is not set
 -# CONFIG_NSH_DISABLE_KILL is not set
-+CONFIG_NSH_DISABLE_IFCONFIG=y
-+CONFIG_NSH_DISABLE_KILL=y
- CONFIG_NSH_DISABLE_LOSETUP=y
- # CONFIG_NSH_DISABLE_LS is not set
+-CONFIG_NSH_DISABLE_LOSETUP=y
+-# CONFIG_NSH_DISABLE_LS is not set
 -# CONFIG_NSH_DISABLE_MB is not set
 -# CONFIG_NSH_DISABLE_MKDIR is not set
-+CONFIG_NSH_DISABLE_MB=y
-+CONFIG_NSH_DISABLE_MKDIR=y
-+# CONFIG_NSH_DISABLE_MKFATFS is not set
- CONFIG_NSH_DISABLE_MKFIFO=y
- CONFIG_NSH_DISABLE_MKRD=y
+-CONFIG_NSH_DISABLE_MKFIFO=y
+-CONFIG_NSH_DISABLE_MKRD=y
 -# CONFIG_NSH_DISABLE_MH is not set
-+CONFIG_NSH_DISABLE_MH=y
- # CONFIG_NSH_DISABLE_MOUNT is not set
+-# CONFIG_NSH_DISABLE_MOUNT is not set
 -# CONFIG_NSH_DISABLE_MW is not set
-+CONFIG_NSH_DISABLE_MV=y
-+CONFIG_NSH_DISABLE_MW=y
- # CONFIG_NSH_DISABLE_PS is not set
- CONFIG_NSH_DISABLE_PUT=y
+-# CONFIG_NSH_DISABLE_PS is not set
+-CONFIG_NSH_DISABLE_PUT=y
 -# CONFIG_NSH_DISABLE_PWD is not set
 -# CONFIG_NSH_DISABLE_RM is not set
 -# CONFIG_NSH_DISABLE_RMDIR is not set
@@ -612,50 +638,33 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
 -# CONFIG_NSH_DISABLE_UMOUNT is not set
 -# CONFIG_NSH_DISABLE_UNSET is not set
 -# CONFIG_NSH_DISABLE_USLEEP is not set
-+CONFIG_NSH_DISABLE_PWD=y
-+CONFIG_NSH_DISABLE_RM=y
-+CONFIG_NSH_DISABLE_RMDIR=y
-+CONFIG_NSH_DISABLE_SET=y
-+CONFIG_NSH_DISABLE_SH=y
-+CONFIG_NSH_DISABLE_SLEEP=y
-+CONFIG_NSH_DISABLE_TEST=y
-+CONFIG_NSH_DISABLE_UMOUNT=y
-+CONFIG_NSH_DISABLE_UNSET=y
-+CONFIG_NSH_DISABLE_USLEEP=y
- CONFIG_NSH_DISABLE_WGET=y
- CONFIG_NSH_DISABLE_XD=y
- 
-@@ -543,21 +681,19 @@ CONFIG_NSH_DISABLE_XD=y
- # Configure Command Options
- #
- CONFIG_NSH_CODECS_BUFSIZE=128
+-CONFIG_NSH_DISABLE_WGET=y
+-CONFIG_NSH_DISABLE_XD=y
+-
+-#
+-# Configure Command Options
+-#
+-CONFIG_NSH_CODECS_BUFSIZE=128
 -CONFIG_NSH_FILEIOSIZE=512
 -CONFIG_NSH_LINELEN=64
 -CONFIG_NSH_DISABLE_SEMICOLON=y
 -CONFIG_NSH_MAXARGUMENTS=6
 -# CONFIG_NSH_ARGCAT is not set
 -CONFIG_NSH_NESTDEPTH=3
-+CONFIG_NSH_FILEIOSIZE=64
-+
-+#
-+# Scripting Support
-+#
- CONFIG_NSH_DISABLESCRIPT=y
+-CONFIG_NSH_DISABLESCRIPT=y
 -# CONFIG_NSH_DISABLEBG is not set
 -CONFIG_NSH_CONSOLE=y
- 
- #
+-
+-#
 -# USB Trace Support
-+# Console Configuration
- #
-+CONFIG_NSH_CONSOLE=y
- # CONFIG_NSH_ALTCONDEV is not set
+-#
+-# CONFIG_NSH_ALTCONDEV is not set
 -# CONFIG_NSH_ARCHINIT is not set
-+CONFIG_NSH_ARCHINIT=y
++# CONFIG_NSH_LIBRARY is not set
  
  #
  # NxWidgets/NxWM
-@@ -571,97 +707,19 @@ CONFIG_NSH_CONSOLE=y
+@@ -571,97 +663,27 @@ CONFIG_NSH_CONSOLE=y
  #
  # System Libraries and NSH Add-Ons
  #
@@ -708,12 +717,13 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
 -#
 -# readline()
 -#
- CONFIG_SYSTEM_READLINE=y
- CONFIG_READLINE_ECHO=y
+-CONFIG_SYSTEM_READLINE=y
+-CONFIG_READLINE_ECHO=y
 -
 -#
 -# Power Off
 -#
++# CONFIG_SYSTEM_READLINE is not set
  # CONFIG_SYSTEM_POWEROFF is not set
 -
 -#
@@ -757,10 +767,30 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/defconfig src/nuttx/
 -#
 -# Zmodem Commands
 -#
++CONFIG_SYSTEM_USBMSC=y
++CONFIG_SYSTEM_USBMSC_NLUNS=1
++CONFIG_SYSTEM_USBMSC_DEVMINOR1=0
++CONFIG_SYSTEM_USBMSC_DEVPATH1="/dev/mtdblock0"
++CONFIG_SYSTEM_USBMSC_DEVMINOR2=1
++CONFIG_SYSTEM_USBMSC_DEVPATH2="/dev/mmcsd1"
++CONFIG_SYSTEM_USBMSC_DEVMINOR3=2
++CONFIG_SYSTEM_USBMSC_DEVPATH3="/dev/mmcsd2"
++# CONFIG_SYSTEM_USBMSC_DEBUGMM is not set
  # CONFIG_SYSTEM_ZMODEM is not set
+diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/ld.script src/nuttx/configs/teensy/nsh/ld.script
+--- tmp/nuttx/configs/teensy/nsh/ld.script	2015-05-25 19:55:23.126821951 +0300
++++ src/nuttx/configs/teensy/nsh/ld.script	2015-05-31 15:38:57.975847046 +0300
+@@ -130,6 +130,7 @@ SECTIONS
+ 		*(.handlers)
+ 		*(.text)
+ 		*(.text.*)
++		*(.progmem.*)
+ 		_etext = . ;
+ 	} > flash
+ 
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/Make.defs src/nuttx/configs/teensy/nsh/Make.defs
---- tmp/nuttx/configs/teensy/nsh/Make.defs	2015-05-19 15:48:42.348741841 +0300
-+++ src/nuttx/configs/teensy/nsh/Make.defs	2015-05-28 09:53:50.503649024 +0300
+--- tmp/nuttx/configs/teensy/nsh/Make.defs	2015-05-25 19:55:23.126821951 +0300
++++ src/nuttx/configs/teensy/nsh/Make.defs	2015-05-31 13:26:03.776191031 +0300
 @@ -63,7 +63,7 @@ OBJCOPY = $(CROSSDEV)objcopy
  OBJDUMP = $(CROSSDEV)objdump
  
@@ -771,18 +801,19 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/nsh/Make.defs src/nuttx/
  
  ifneq ($(CONFIG_DEBUG_NOOPT),y)
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/src/at90usb_boot.c src/nuttx/configs/teensy/src/at90usb_boot.c
---- tmp/nuttx/configs/teensy/src/at90usb_boot.c	2015-05-19 15:48:42.348741841 +0300
-+++ src/nuttx/configs/teensy/src/at90usb_boot.c	2015-05-28 09:53:50.503649024 +0300
-@@ -42,6 +42,8 @@
+--- tmp/nuttx/configs/teensy/src/at90usb_boot.c	2015-05-25 19:55:23.126821951 +0300
++++ src/nuttx/configs/teensy/src/at90usb_boot.c	2015-05-31 13:35:08.420167536 +0300
+@@ -42,6 +42,9 @@
  #include <debug.h>
  
  #include <arch/board/board.h>
 +#include <nuttx/mtd/mtd.h>
 +#include <nuttx/spi/spi.h>
++#include <nuttx/board.h>
  
  #include "up_arch.h"
  #include "up_internal.h"
-@@ -90,3 +92,49 @@ void at90usb_boardinitialize(void)
+@@ -90,3 +93,49 @@ void at90usb_boardinitialize(void)
    at90usb_ledinit();
  #endif
  }
@@ -833,8 +864,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/src/at90usb_boot.c src/n
 +  return 0;
 +}
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/src/at90usb_spi.c src/nuttx/configs/teensy/src/at90usb_spi.c
---- tmp/nuttx/configs/teensy/src/at90usb_spi.c	2015-05-19 15:48:42.348741841 +0300
-+++ src/nuttx/configs/teensy/src/at90usb_spi.c	2015-05-28 09:53:50.503649024 +0300
+--- tmp/nuttx/configs/teensy/src/at90usb_spi.c	2015-05-25 19:55:23.126821951 +0300
++++ src/nuttx/configs/teensy/src/at90usb_spi.c	2015-05-31 13:26:03.776191031 +0300
 @@ -178,6 +178,7 @@ void  avr_spiselect(FAR struct spi_dev_s
  uint8_t avr_spistatus(FAR struct spi_dev_s *dev, enum spi_dev_e devid)
  {
@@ -852,9 +883,36 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/src/at90usb_spi.c src/nu
    sspdbg("Returning %02x\n", ret);
    return ret;
  }
+diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/configs/teensy/src/at90usb_usbmsc.c src/nuttx/configs/teensy/src/at90usb_usbmsc.c
+--- tmp/nuttx/configs/teensy/src/at90usb_usbmsc.c	2015-05-25 19:55:23.126821951 +0300
++++ src/nuttx/configs/teensy/src/at90usb_usbmsc.c	2015-05-31 13:34:57.616168002 +0300
+@@ -46,6 +46,7 @@
+ #include <errno.h>
+ 
+ #include <nuttx/spi/spi.h>
++#include <nuttx/board.h>
+ #include <nuttx/mmcsd.h>
+ 
+ #include "at90usb_internal.h"
+@@ -87,6 +88,7 @@
+ 
+ int usbmsc_archinitialize(void)
+ {
++#if 0
+   FAR struct spi_dev_s *spi;
+   int ret;
+ 
+@@ -113,4 +115,7 @@ int usbmsc_archinitialize(void)
+     }
+ 
+   return OK;
++#else
++  return board_app_initialize();
++#endif
+ }
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/drivers/mtd/ftl.c src/nuttx/drivers/mtd/ftl.c
---- tmp/nuttx/drivers/mtd/ftl.c	2015-05-19 15:48:42.400742342 +0300
-+++ src/nuttx/drivers/mtd/ftl.c	2015-05-28 09:53:50.507649064 +0300
+--- tmp/nuttx/drivers/mtd/ftl.c	2015-05-25 19:55:23.178821949 +0300
++++ src/nuttx/drivers/mtd/ftl.c	2015-05-31 13:26:03.780191030 +0300
 @@ -78,6 +78,8 @@ struct ftl_struct_s
  #ifdef CONFIG_FS_WRITABLE
    FAR uint8_t          *eblock;  /* One, in-memory erase block */
@@ -989,8 +1047,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/drivers/mtd/ftl.c src/nuttx/drivers/mtd
  
        /* Get the number of R/W blocks per erase block */
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/drivers/mtd/m25px.c src/nuttx/drivers/mtd/m25px.c
---- tmp/nuttx/drivers/mtd/m25px.c	2015-05-19 15:48:42.404742380 +0300
-+++ src/nuttx/drivers/mtd/m25px.c	2015-05-28 09:54:37.892121639 +0300
+--- tmp/nuttx/drivers/mtd/m25px.c	2015-05-25 19:55:23.178821949 +0300
++++ src/nuttx/drivers/mtd/m25px.c	2015-05-31 13:26:03.780191030 +0300
 @@ -89,6 +89,7 @@
  #define M25P_MEMORY_TYPE           CONFIG_M25P_MEMORY_TYPE
  #define M25P_RES_ID                0x13
@@ -1072,8 +1130,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/drivers/mtd/m25px.c src/nuttx/drivers/m
          }
      }
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/include/nuttx/compiler.h src/nuttx/include/nuttx/compiler.h
---- tmp/nuttx/include/nuttx/compiler.h	2015-05-19 15:48:42.480743115 +0300
-+++ src/nuttx/include/nuttx/compiler.h	2015-05-28 09:53:50.507649064 +0300
+--- tmp/nuttx/include/nuttx/compiler.h	2015-05-25 19:55:23.258821948 +0300
++++ src/nuttx/include/nuttx/compiler.h	2015-05-31 13:26:03.780191030 +0300
 @@ -474,7 +474,7 @@
  # undef  CONFIG_CAN_PASS_STRUCTS
  
@@ -1084,8 +1142,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/include/nuttx/compiler.h src/nuttx/incl
   * Global Function Prototypes
   ****************************************************************************/
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/tools/Config.mk src/nuttx/tools/Config.mk
---- tmp/nuttx/tools/Config.mk	2015-05-19 15:48:42.636744627 +0300
-+++ src/nuttx/tools/Config.mk	2015-05-28 09:53:50.507649064 +0300
+--- tmp/nuttx/tools/Config.mk	2015-05-25 19:55:23.410821944 +0300
++++ src/nuttx/tools/Config.mk	2015-05-31 13:26:03.780191030 +0300
 @@ -114,7 +114,7 @@ endef
  
  define COMPILE
@@ -1106,7 +1164,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/tools/Config.mk src/nuttx/tools/Config.
  # MOVEOBJ - Default macro to move an object file to the correct location
 diff -Nurp -x '*~' -x '*.orig' tmp/nuttx/.version src/nuttx/.version
 --- tmp/nuttx/.version	1970-01-01 03:00:00.000000000 +0300
-+++ src/nuttx/.version	2015-05-28 09:53:50.507649064 +0300
++++ src/nuttx/.version	2015-05-31 13:26:03.780191030 +0300
 @@ -0,0 +1,6 @@
 +#!/bin/bash
 +
