@@ -10,7 +10,15 @@ PROXY_USER_NAME=${1}
 PROXY_USER_PASSWD=${2}
 
 # Local variables
-LOCAL_SOCAT_GIT_PROXY_CONFIG_FILE=~/bin/.git-proxy
+LOCAL_SOCAT_GIT_PROXY_CONFIG_FILE=~/.git-proxy
+
+
+
+##################################
+# Setup git/socat and wget utils #
+##################################
+
+sudo apt-get install git socat wget
 
 
 
@@ -29,7 +37,7 @@ echo \
 # Requires that the proxy allows CONNECT to port 9418.
 #
 # Save this file as gitproxy somewhere in your path (e.g., ~/bin) and then run
-#   chmod +x $LOCAL_SOCAT_GIT_PROXY_CONFIG_FILE
+#   chmod +x ${LOCAL_SOCAT_GIT_PROXY_CONFIG_FILE}
 #   git config --global core.gitproxy ${LOCAL_SOCAT_GIT_PROXY_CONFIG_FILE}
 #
 # More details at http://tinyurl.com/8xvpny

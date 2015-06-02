@@ -1,10 +1,10 @@
 #!/bin/bash
 
-sudo apt-get install git socat
-sudo apt-get install autoconf automake
-sudo apt-get install bison flex g++ g++-multilib libgmp-dev libmpfr-dev libmpc-dev gperf libncurses5-dev libqt4-dev zlib1g-dev
-sudo apt-get install avr-libc
-sudo apt-get install lpc21isp libusb-1.0-0-dev minicom
+sudo apt-get install git \
+                     autoconf automake \
+                     bison flex g++ g++-multilib libgmp-dev libmpfr-dev libmpc-dev gperf libncurses5-dev libqt4-dev zlib1g-dev \
+                     avr-libc \
+                     lpc21isp libusb-1.0-0-dev minicom
 
 # Setup st-link utility
 # http://startingelectronics.org/tutorials/STM32-microcontrollers/programming-STM32-flash-in-Linux/
