@@ -1,6 +1,6 @@
 diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/Kconfig src/apps/examples/Kconfig
---- tmp/apps/examples/Kconfig	2015-04-28 10:43:43.799538706 +0300
-+++ src/apps/examples/Kconfig	2015-04-28 10:58:30.075341953 +0300
+--- tmp/apps/examples/Kconfig	2015-08-07 10:28:22.164022351 +0300
++++ src/apps/examples/Kconfig	2015-08-07 10:28:36.648022339 +0300
 @@ -52,6 +52,7 @@ source "$APPSDIR/examples/poll/Kconfig"
  source "$APPSDIR/examples/pppd/Kconfig"
  source "$APPSDIR/examples/pwm/Kconfig"
@@ -10,8 +10,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/Kconfig src/apps/examples/Kconf
  source "$APPSDIR/examples/random/Kconfig"
  source "$APPSDIR/examples/relays/Kconfig"
 diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/Make.defs src/apps/examples/Make.defs
---- tmp/apps/examples/Make.defs	2015-04-28 10:43:43.799538706 +0300
-+++ src/apps/examples/Make.defs	2015-04-28 10:58:30.075341953 +0300
+--- tmp/apps/examples/Make.defs	2015-08-07 10:28:22.164022351 +0300
++++ src/apps/examples/Make.defs	2015-08-07 10:28:36.648022339 +0300
 @@ -234,6 +234,10 @@ ifeq ($(CONFIG_EXAMPLES_POSIXSPAWN),y)
  CONFIGURED_APPS += examples/posix_spawn
  endif
@@ -24,8 +24,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/Make.defs src/apps/examples/Mak
  CONFIGURED_APPS += examples/qencoder
  endif
 diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/Makefile src/apps/examples/Makefile
---- tmp/apps/examples/Makefile	2015-04-28 10:43:43.799538706 +0300
-+++ src/apps/examples/Makefile	2015-04-28 10:58:30.075341953 +0300
+--- tmp/apps/examples/Makefile	2015-08-07 10:28:22.164022351 +0300
++++ src/apps/examples/Makefile	2015-08-07 10:28:36.648022339 +0300
 @@ -42,7 +42,7 @@ SUBDIRS += dhcpd discover djoystick elf
  SUBDIRS += hidkbd igmp i2schar json keypadtest lcdrw ltdc mm modbus mount
  SUBDIRS += mtdpart mtdrwb netpkt nettest nrf24l01_term nsh null nx nxterm
@@ -46,7 +46,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/Makefile src/apps/examples/Make
  CNTXTDIRS += pppd
 diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/prometheus/.gitignore src/apps/examples/prometheus/.gitignore
 --- tmp/apps/examples/prometheus/.gitignore	1970-01-01 03:00:00.000000000 +0300
-+++ src/apps/examples/prometheus/.gitignore	2015-04-28 10:58:30.075341953 +0300
++++ src/apps/examples/prometheus/.gitignore	2015-08-07 10:28:36.648022339 +0300
 @@ -0,0 +1,11 @@
 +/Make.dep
 +/.depend
@@ -61,7 +61,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/prometheus/.gitignore src/apps/
 +/*.src
 diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/prometheus/Kconfig src/apps/examples/prometheus/Kconfig
 --- tmp/apps/examples/prometheus/Kconfig	1970-01-01 03:00:00.000000000 +0300
-+++ src/apps/examples/prometheus/Kconfig	2015-04-28 10:58:30.075341953 +0300
++++ src/apps/examples/prometheus/Kconfig	2015-08-07 10:28:36.648022339 +0300
 @@ -0,0 +1,22 @@
 +#
 +# For a description of the syntax of this configuration file,
@@ -87,7 +87,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/prometheus/Kconfig src/apps/exa
 +endif
 diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/prometheus/Makefile src/apps/examples/prometheus/Makefile
 --- tmp/apps/examples/prometheus/Makefile	1970-01-01 03:00:00.000000000 +0300
-+++ src/apps/examples/prometheus/Makefile	2015-04-29 15:50:40.522036551 +0300
++++ src/apps/examples/prometheus/Makefile	2015-08-07 10:28:36.648022339 +0300
 @@ -0,0 +1,137 @@
 +############################################################################
 +# apps/examples/prometheus/Makefile
@@ -228,8 +228,8 @@ diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/prometheus/Makefile src/apps/ex
 +-include Make.dep
 diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/prometheus/prometheus_main.c src/apps/examples/prometheus/prometheus_main.c
 --- tmp/apps/examples/prometheus/prometheus_main.c	1970-01-01 03:00:00.000000000 +0300
-+++ src/apps/examples/prometheus/prometheus_main.c	2015-04-30 14:17:39.636013504 +0300
-@@ -0,0 +1,57 @@
++++ src/apps/examples/prometheus/prometheus_main.c	2015-08-10 14:02:47.966479271 +0300
+@@ -0,0 +1,79 @@
 +/****************************************************************************
 + * Included Files
 + ****************************************************************************/
@@ -260,6 +260,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/prometheus/prometheus_main.c sr
 +{
 +	int fd;
 +	struct w1_rom_code_s rom;
++	uint32_t t;
 +
 +	printf("open %s device : ", W1_BUS);
 +	fd = open(W1_BUS, O_CREAT);
@@ -270,7 +271,7 @@ diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/prometheus/prometheus_main.c sr
 +	}
 +	printf("OK\n");
 +
-+	printf("ioctl read rom :");
++	printf("ioctl read rom : ");
 +	if (ioctl(fd, SNIOC_W1_BUS_READ_ROM, (FAR struct w1_rom_code_s*) &rom)
 +			!= 0) {
 +		printf("FAIL\n");
@@ -284,6 +285,27 @@ diff -Nurp -x '*~' -x '*.orig' tmp/apps/examples/prometheus/prometheus_main.c sr
 +	printf("close %s device : ", W1_BUS);
 +	close(fd);
 +	printf("OK\n");
++
++	/* DS18B20 demo */
++	printf("open %s device : ", "/dev/w1-1/ds18b20");
++	fd = open("/dev/w1-1/ds18b20", O_RDONLY);
++	if (fd < 0) {
++		printf("FAIL\n");
++		return -1;
++
++	}
++	printf("OK\n");
++
++	printf("read device : ");
++	if (read(fd, (void*) &t, sizeof(t)) != sizeof(t)) {
++		printf("FAIL\n");
++		close(fd);
++		return -1;
++	}
++	printf("temp %li\n", t);
++	//printf("%d\n", (int)t);
++
++	close(fd);
 +
 +	return -1;
 +}

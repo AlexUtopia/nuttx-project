@@ -38,10 +38,12 @@ TOOLCHAIN_PREFIX = $(BR2_ARCH)-$(BR2_GNU_TARGET_SUFFIX)-
 all:
 	mkdir -p $(EXE_DIR)/
 	cd $(SRC_DIR)/$(NUTTX_DIR)/; . ./setenv.sh; make CROSSDEV=$(TOOLCHAIN_PREFIX) pass2; \
-	$(TOOLCHAIN_PREFIX)size -d nuttx > ../../$(EXE_DIR)/nuttx.info; \
-	$(TOOLCHAIN_PREFIX)objdump -D nuttx  > ../../$(EXE_DIR)/nuttx.disassembly
+	$(TOOLCHAIN_PREFIX)size    -d        nuttx > ../../$(EXE_DIR)/nuttx.info;            \
+	$(TOOLCHAIN_PREFIX)objdump -D        nuttx > ../../$(EXE_DIR)/nuttx.disassembly;     \
+	$(TOOLCHAIN_PREFIX)objdump -t        nuttx > ../../$(EXE_DIR)/nuttx.map;             \
+	$(TOOLCHAIN_PREFIX)objcopy -O ihex   nuttx   ../../$(EXE_DIR)/nuttx.hex;             \
+	$(TOOLCHAIN_PREFIX)objcopy -O binary nuttx   ../../$(EXE_DIR)/nuttx.bin
 	cp -f $(SRC_DIR)/$(NUTTX_DIR)/nuttx $(EXE_DIR)/nuttx.elf
-	cp -f $(SRC_DIR)/$(NUTTX_DIR)/nuttx.hex $(EXE_DIR)/nuttx.hex
 
 
 configure:
@@ -63,8 +65,11 @@ toolchain: download configure
 $(TMP_DIR)/$(NUTTX_DIR)/ReleaseNotes:
 	rm -rf $(TMP_DIR)/
 	mkdir $(TMP_DIR)/
-	git clone git://git.code.sf.net/p/nuttx/git $(TMP_DIR)/
-	cd $(TMP_DIR)/; git checkout nuttx-$(CONFIG_NUTTX_VERSION)
+	git clone https://bitbucket.org/patacongo/nuttx.git $(TMP_DIR)/$(NUTTX_DIR)
+	cd $(TMP_DIR)/$(NUTTX_DIR); git checkout nuttx-$(CONFIG_NUTTX_VERSION)
+	git clone https://bitbucket.org/nuttx/apps.git $(TMP_DIR)/$(APPS_DIR)
+	cd $(TMP_DIR)/$(APPS_DIR); git checkout nuttx-$(CONFIG_NUTTX_VERSION)
+	git clone https://bitbucket.org/nuttx/buildroot.git $(TMP_DIR)/$(BUILDROOT_DIR)
 
 
 download: $(TMP_DIR)/$(NUTTX_DIR)/ReleaseNotes
@@ -103,9 +108,11 @@ menuconfig:
 	cd $(SRC_DIR)/$(NUTTX_DIR)/; . ./setenv.sh; make menuconfig
 
 
-boot_firmware:
-	sudo lpc21isp -control -verify -hex $(SRC_DIR)/$(NUTTX_DIR)/nuttx.hex \
-	$(CONFIG_BOOT_FIRMWARE_PORT) \
-	$(CONFIG_BOOT_FIRMWARE_BAUDRATE_BPS) \
-	$(CONFIG_BOARD_OSCILLATOR_FREQ_KHZ)
-	
+rrr:
+	rm -rf $(SRC_DIR)/$(NUTTX_DIR)/
+	cp -rf $(TMP_DIR)/$(NUTTX_DIR)/ $(SRC_DIR)/
+	cd $(SRC_DIR)/$(NUTTX_DIR)/; patch -p2 < ../../$(PATCH_DIR)/$(NUTTX_PATCH)
+	cd $(SRC_DIR)/$(APPS_DIR)/; patch -p2 < ../../$(PATCH_DIR)/$(APPS_PATCH)	
+
+
+include make.boot
